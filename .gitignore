@@ -205,3 +205,36 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Analog PDE Solver specific files
+# SPICE simulation outputs
+*.lis
+*.raw
+*.net
+*.cir
+
+# Verilog simulation
+*.vcd
+*.fst
+*.fst.hier
+*.dump
+work/
+
+# Hardware synthesis outputs
+*.bit
+*.sof
+*.rbf
+synthesis/
+simulation/
+
+# Large simulation data
+*.hdf5
+*.h5
+*.npy
+*.npz
+data/large/
+results/
+
+# Performance profiling
+*.prof
+*.lprof
