@@ -1,0 +1,38 @@
+FROM python:3.11-slim
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    git \
+    build-essential \
+    ngspice \
+    iverilog \
+    verilator \
+    bc \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set working directory
+WORKDIR /workspace
+
+# Copy requirements first for better caching
+COPY requirements.txt pyproject.toml ./
+
+# Install Python dependencies
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+# Install package in development mode
+COPY . .
+RUN pip install -e ".[dev,docs,hardware]"
+
+# Install pre-commit hooks
+RUN pre-commit install || true
+
+# Create non-root user
+RUN useradd -m -s /bin/bash developer && \
+    chown -R developer:developer /workspace
+
+USER developer
+
+# Default command
+CMD ["bash"]
