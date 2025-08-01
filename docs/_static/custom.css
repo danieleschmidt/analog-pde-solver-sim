@@ -1,0 +1,107 @@
+/* Custom CSS for Analog PDE Solver Documentation */
+
+/* Improve code block styling */
+.highlight {
+    background: #f8f8f8;
+    border: 1px solid #e1e4e5;
+    border-radius: 4px;
+    margin: 1em 0;
+}
+
+/* Style for mathematical equations */
+.math {
+    text-align: center;
+    margin: 1em 0;
+}
+
+/* Custom admonition styles for different types */
+.admonition.analog-note {
+    border-left: 4px solid #17a2b8;
+}
+
+.admonition.spice-note {
+    border-left: 4px solid #28a745;
+}
+
+.admonition.verilog-note {
+    border-left: 4px solid #dc3545;
+}
+
+.admonition.performance-tip {
+    border-left: 4px solid #ffc107;
+}
+
+/* Styling for code examples */
+.code-example {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.code-example .caption {
+    font-weight: bold;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+/* Table styling for benchmark results */
+.benchmark-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+.benchmark-table th,
+.benchmark-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.benchmark-table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+}
+
+/* Performance metrics styling */
+.performance-metric {
+    display: inline-block;
+    background: #e9ecef;
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    font-family: monospace;
+    font-size: 0.9em;
+}
+
+.performance-metric.speedup {
+    background: #d4edda;
+    color: #155724;
+}
+
+.performance-metric.energy {
+    background: #fff3cd;
+    color: #856404;
+}
+
+/* API documentation improvements */
+.py.class > dt,
+.py.function > dt,
+.py.method > dt {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 0.5rem;
+}
+
+/* Responsive design improvements */
+@media (max-width: 768px) {
+    .benchmark-table {
+        font-size: 0.8em;
+    }
+    
+    .code-example {
+        padding: 0.5rem;
+    }
+}

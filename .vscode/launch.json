@@ -1,0 +1,48 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Analog Solver",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/examples/debug_solver.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONPATH": "${workspaceFolder}",
+        "SPICE_LIB_DIR": "/usr/share/ngspice/scripts"
+      }
+    },
+    {
+      "name": "Run Benchmarks",
+      "type": "python", 
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/run-benchmarks.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "args": ["--profile", "fast"]
+    },
+    {
+      "name": "Debug Tests",
+      "type": "python",
+      "request": "launch",
+      "module": "pytest",
+      "args": [
+        "tests/",
+        "-v",
+        "--tb=short"
+      ],
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "Profile Performance",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/profile-performance.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}",
+      "args": ["--problem", "poisson_2d", "--size", "256"]
+    }
+  ]
+}
