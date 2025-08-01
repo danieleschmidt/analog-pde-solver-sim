@@ -1,0 +1,27 @@
+{
+  "recommendations": [
+    "ms-python.python",
+    "ms-python.black-formatter",
+    "ms-python.flake8",
+    "ms-python.mypy-type-checker",
+    "ms-toolsai.jupyter",
+    "redhat.vscode-yaml",
+    "yzhang.markdown-all-in-one",
+    "davidanson.vscode-markdownlint",
+    "ms-vscode.vscode-json",
+    "mshr-h.veriloghdl",
+    "eirikpre.systemverilog",
+    "github.copilot",
+    "github.copilot-chat",
+    "ms-vscode.test-adapter-converter",
+    "littlefoxteam.vscode-python-test-adapter",
+    "ms-vscode-remote.remote-containers",
+    "ms-vscode-remote.remote-ssh",
+    "eamodio.gitlens",
+    "ms-vscode.hexeditor",
+    "ms-python.debugpy"
+  ],
+  "unwantedRecommendations": [
+    "ms-python.pylint"
+  ]
+}
