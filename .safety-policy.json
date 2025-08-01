@@ -1,0 +1,19 @@
+{
+  "security": {
+    "ignore-cvss-severity-below": 6.0,
+    "ignore-cvss-unknown-severity": false,
+    "continue-on-vulnerability-error": false
+  },
+  "alert": {
+    "ignore-python-version": false,
+    "ignore-unpinned-requirements": false
+  },
+  "ignore": {
+    "70612": "Jinja2 CVE in development dependencies only"
+  },
+  "output": {
+    "report": {
+      "format": "json"
+    }
+  }
+}

@@ -1,0 +1,217 @@
+name: Performance Benchmarks
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 4 * * 1'  # Weekly on Monday at 4 AM
+  workflow_dispatch:
+    inputs:
+      benchmark_profile:
+        description: 'Benchmark profile to run'
+        required: false
+        default: 'fast'
+        type: choice
+        options:
+        - fast
+        - default
+        - accurate
+        - all
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+        
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Full history for performance comparison
+        
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-dev
+        
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+        pip install psutil  # For performance monitoring
+        
+    - name: Download baseline (if exists)
+      continue-on-error: true
+      run: |
+        curl -f -o baseline.json \
+          "https://github.com/${{ github.repository }}/releases/latest/download/baseline.json" || \
+          echo "No baseline found, will create new one"
+          
+    - name: Run performance benchmarks
+      run: |
+        profile="${{ github.event.inputs.benchmark_profile || 'fast' }}"
+        if [ "${{ github.event_name }}" = "pull_request" ]; then
+          profile="fast"  # Always use fast profile for PRs
+        fi
+        
+        mkdir -p benchmark_results
+        python scripts/run-benchmarks.py \
+          --profile "$profile" \
+          --ci \
+          --output benchmark_results \
+          $([ -f baseline.json ] && echo "--baseline baseline.json" || echo "")
+          
+    - name: Upload benchmark results
+      uses: actions/upload-artifact@v3
+      with:
+        name: benchmark-results-${{ matrix.python-version }}
+        path: |
+          benchmark_results/
+          baseline_comparison.json
+          
+    - name: Performance regression check
+      if: github.event_name == 'pull_request'
+      run: |
+        if [ -f benchmark_results/baseline_comparison.json ]; then
+          # Check for significant performance regressions
+          python -c "
+          import json
+          with open('benchmark_results/baseline_comparison.json') as f:
+              comp = json.load(f)
+          
+          degraded = comp.get('summary', {}).get('degraded', 0)
+          total = len(comp.get('comparisons', []))
+          
+          if total > 0 and degraded / total > 0.3:
+              print(f'❌ Performance regression detected: {degraded}/{total} benchmarks degraded')
+              exit(1)
+          else:
+              print(f'✅ Performance check passed: {degraded}/{total} benchmarks degraded')
+          "
+        else
+          echo "ℹ️ No baseline for comparison, skipping regression check"
+          
+    - name: Generate performance report
+      run: |
+        python -c "
+        import json
+        import os
+        from pathlib import Path
+        
+        results_dir = Path('benchmark_results')
+        if not results_dir.exists():
+            print('No results directory found')
+            exit(1)
+            
+        result_files = list(results_dir.glob('benchmark_*.json'))
+        if not result_files:
+            print('No benchmark result files found')
+            exit(1)
+            
+        latest_result = max(result_files, key=os.path.getmtime)
+        
+        with open(latest_result) as f:
+            data = json.load(f)
+            
+        summary = data.get('summary', {})
+        metrics = data.get('performance_metrics', {})
+        
+        print('## 📊 Performance Benchmark Results')
+        print(f\"- **Success Rate**: {summary.get('success_rate', 0):.1%}\")
+        print(f\"- **Average Execution Time**: {metrics.get('execution_time', {}).get('mean', 0):.3f}s\")
+        print(f\"- **Peak Memory Usage**: {metrics.get('memory_usage', {}).get('peak', 0):.1f}MB\")
+        print(f\"- **Total Problems**: {summary.get('total_problems', 0)}\")
+        print(f\"- **Timestamp**: {summary.get('timestamp', 'Unknown')}\")
+        " >> $GITHUB_STEP_SUMMARY
+        
+    - name: Update baseline (main branch only)
+      if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+      run: |
+        # Find the latest benchmark result
+        latest_result=$(ls -t benchmark_results/benchmark_*.json | head -1)
+        if [ -f "$latest_result" ]; then
+          cp "$latest_result" benchmark_results/baseline.json
+          echo "Updated baseline from $latest_result"
+        fi
+        
+    - name: Create release with baseline (tags only)
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: benchmark_results/baseline.json
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+  benchmark-comparison:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event.inputs.benchmark_profile == 'all'
+    
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+        pip install psutil matplotlib seaborn
+        
+    - name: Run comprehensive benchmark comparison
+      run: |
+        python scripts/run-benchmarks.py --profile all --output benchmark_results
+        
+    - name: Generate performance plots
+      run: |
+        python -c "
+        import json
+        import matplotlib.pyplot as plt
+        import seaborn as sns
+        from pathlib import Path
+        
+        results_file = Path('benchmark_results/comparison_report.json')
+        if not results_file.exists():
+            print('No comparison results found')
+            exit(0)
+            
+        with open(results_file) as f:
+            data = json.load(f)
+            
+        # Create comparison plot
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(12, 5))
+        
+        solver_names = list(data['summary'].keys())
+        success_rates = [data['summary'][name]['summary']['success_rate'] for name in solver_names]
+        avg_times = [data['summary'][name]['performance_metrics']['execution_time']['mean'] for name in solver_names]
+        
+        ax1.bar(solver_names, success_rates)
+        ax1.set_title('Success Rate by Solver')
+        ax1.set_ylabel('Success Rate')
+        
+        ax2.bar(solver_names, avg_times)
+        ax2.set_title('Average Execution Time by Solver')
+        ax2.set_ylabel('Time (seconds)')
+        
+        plt.tight_layout()
+        plt.savefig('benchmark_results/solver_comparison.png', dpi=150)
+        print('Generated solver comparison plot')
+        "
+        
+    - name: Upload comprehensive results
+      uses: actions/upload-artifact@v3
+      with:
+        name: comprehensive-benchmark-results
+        path: |
+          benchmark_results/
+          *.png

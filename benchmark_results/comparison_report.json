@@ -1,0 +1,50 @@
+{
+  "comparison_results": {
+    "fast": [
+      {
+        "problem_name": "poisson_2d_sine",
+        "execution_time": 0.11,
+        "composite_score": 78.5
+      },
+      {
+        "problem_name": "laplace_2d_dirichlet",
+        "execution_time": 0.12,
+        "composite_score": 75.2
+      }
+    ],
+    "default": [
+      {
+        "problem_name": "poisson_2d_sine",
+        "execution_time": 0.235,
+        "composite_score": 82.1
+      },
+      {
+        "problem_name": "laplace_2d_dirichlet",
+        "execution_time": 0.256,
+        "composite_score": 79.8
+      }
+    ]
+  },
+  "summary": {
+    "fast": {
+      "summary": {
+        "success_rate": 1.0
+      },
+      "performance_metrics": {
+        "execution_time": {
+          "mean": 0.115
+        }
+      }
+    },
+    "default": {
+      "summary": {
+        "success_rate": 1.0
+      },
+      "performance_metrics": {
+        "execution_time": {
+          "mean": 0.245
+        }
+      }
+    }
+  }
+}

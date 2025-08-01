@@ -1,0 +1,19 @@
+# Bandit security scanning configuration
+[bandit]
+exclude_dirs = ["tests", "docs", "build", "dist", ".tox", ".git"]
+skips = ["B101", "B601"]  # Skip assert usage and shell injection (for subprocess)
+
+# Severity levels: LOW, MEDIUM, HIGH
+severity = "medium"
+
+# Confidence levels: LOW, MEDIUM, HIGH  
+confidence = "medium"
+
+# Custom test selection
+tests = ["B102", "B103", "B104", "B105", "B106", "B107", "B108", "B109", "B110"]
+
+[bandit.formatters]
+txt = true
+json = false
+xml = false
+csv = false

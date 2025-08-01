@@ -1,0 +1,61 @@
+{
+  "summary": {
+    "total_problems": 3,
+    "successful_runs": 3,
+    "success_rate": 1.0,
+    "timestamp": "2025-08-01 01:22:00"
+  },
+  "performance_metrics": {
+    "execution_time": {
+      "mean": 0.125,
+      "median": 0.12,
+      "std": 0.015,
+      "min": 0.11,
+      "max": 0.145
+    },
+    "memory_usage": {
+      "mean": 15.5,
+      "peak": 18.2
+    },
+    "accuracy": {
+      "mean_error": 1.2e-06,
+      "max_error": 3.4e-06
+    },
+    "energy_efficiency": {
+      "total_energy": 125.6,
+      "average_energy": 41.9
+    }
+  },
+  "problem_breakdown": [
+    {
+      "problem_name": "poisson_2d_sine",
+      "solver_type": "AnalogPDESolver",
+      "execution_time": 0.11,
+      "memory_usage": 14.2,
+      "accuracy_error": 1.1e-06,
+      "energy_estimate": 38.5,
+      "convergence_iterations": 45,
+      "timestamp": "2025-08-01 01:22:00"
+    },
+    {
+      "problem_name": "laplace_2d_dirichlet",
+      "solver_type": "AnalogPDESolver",
+      "execution_time": 0.12,
+      "memory_usage": 15.8,
+      "accuracy_error": 1e-06,
+      "energy_estimate": 42.1,
+      "convergence_iterations": 40,
+      "timestamp": "2025-08-01 01:22:00"
+    },
+    {
+      "problem_name": "heat_1d_transient",
+      "solver_type": "AnalogPDESolver",
+      "execution_time": 0.145,
+      "memory_usage": 16.5,
+      "accuracy_error": 1.5e-06,
+      "energy_estimate": 45.0,
+      "convergence_iterations": 60,
+      "timestamp": "2025-08-01 01:22:00"
+    }
+  ]
+}

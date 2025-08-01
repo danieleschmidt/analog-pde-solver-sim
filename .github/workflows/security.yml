@@ -1,0 +1,92 @@
+name: Security Scanning
+
+on:
+  push:
+    branches: [ main ]
+  schedule:
+    - cron: '0 2 * * 1'  # Weekly on Monday at 2 AM
+  workflow_dispatch:
+
+jobs:
+  dependency-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pip-audit safety
+        
+    - name: Audit dependencies
+      run: |
+        pip-audit --desc --format=json --output=audit-results.json
+        safety check --json --output=safety-results.json
+        
+    - name: Upload security results
+      uses: actions/upload-artifact@v3
+      with:
+        name: security-scan-results
+        path: |
+          audit-results.json
+          safety-results.json
+          
+  sast-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: python
+        
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+      
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: TruffleHog OSS
+      uses: trufflesecurity/trufflehog@main
+      with:
+        path: ./
+        base: main
+        head: HEAD
+        
+  vulnerability-assessment:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Run comprehensive vulnerability assessment
+      run: |
+        echo "🔒 Security Assessment Results" > security-report.md
+        echo "Generated: $(date)" >> security-report.md
+        echo "" >> security-report.md
+        
+    - name: Update security metrics
+      run: |
+        python scripts/update-security-metrics.py
+        
+    - name: Create security issue if vulnerabilities found
+      if: failure()
+      uses: actions/github-script@v6
+      with:
+        script: |
+          github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: '🚨 Security vulnerabilities detected',
+            body: 'Automated security scan detected vulnerabilities. Please review the security-scan-results artifact.',
+            labels: ['security', 'high-priority', 'autonomous']
+          })

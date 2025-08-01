@@ -1,0 +1,95 @@
+# Terragon Autonomous SDLC Configuration
+# Repository: analog-pde-solver-sim
+# Maturity Level: MATURING (50-75%)
+
+repository:
+  name: "analog-pde-solver-sim"
+  primary_language: "python"
+  maturity_level: "maturing"
+  last_assessment: "2025-08-01T01:03:00Z"
+
+scoring:
+  weights:
+    # Weights adapted for MATURING repositories
+    wsjf: 0.6        # Higher weight on business value
+    ice: 0.1         # Lower weight on simple estimation
+    technicalDebt: 0.2   # Moderate debt focus
+    security: 0.1    # Baseline security attention
+  
+  thresholds:
+    minScore: 15           # Higher threshold for mature repos
+    maxRisk: 0.7          # Lower risk tolerance 
+    securityBoost: 2.0    # 2x multiplier for security issues
+    complianceBoost: 1.8  # 1.8x for compliance items
+
+discovery:
+  sources:
+    - gitHistory          # Parse commit messages for debt markers
+    - staticAnalysis      # Code quality and complexity analysis
+    - issueTrackers       # GitHub issues and PRs
+    - vulnerabilityDatabases  # CVE and security advisories
+    - performanceMonitoring   # Runtime performance data
+    - dependencyAnalysis  # Outdated/vulnerable dependencies
+  
+  patterns:
+    debt_markers:
+      - "TODO"
+      - "FIXME" 
+      - "HACK"
+      - "DEPRECATED"
+      - "temporary"
+      - "quick fix"
+    
+    hotspot_indicators:
+      - high_churn_files     # Files changed frequently
+      - complex_functions    # High cyclomatic complexity
+      - long_functions       # >50 lines
+      - duplicate_code       # Copy-paste detection
+      
+  tools:
+    staticAnalysis:
+      - bandit              # Security analysis
+      - mypy                # Type checking
+      - flake8              # Style and quality
+      - black               # Code formatting
+      - pytest-cov         # Coverage analysis
+    
+    security:
+      - pip-audit           # Dependency vulnerability scanning
+      - safety              # Python package security
+      - bandit              # Static security analysis
+      
+    performance:
+      - pytest-benchmark    # Performance regression detection
+      - memory-profiler     # Memory usage analysis
+
+execution:
+  maxConcurrentTasks: 1
+  
+  testRequirements:
+    minCoverage: 80
+    performanceRegression: 5  # Max 5% regression allowed
+    
+  rollbackTriggers:
+    - testFailure
+    - buildFailure
+    - securityViolation
+    - coverageDecrease
+    
+  automation:
+    preCommitHooks: true
+    continuousIntegration: true
+    securityScanning: true
+    dependencyUpdates: true
+
+learning:
+  # Track prediction accuracy for continuous improvement
+  estimationAccuracy:
+    target: 0.85
+    windowSize: 50  # Last 50 completed items
+  
+  # Adaptation parameters  
+  adaptation:
+    scoringModelUpdate: weekly
+    weightAdjustment: monthly
+    thresholdCalibration: quarterly
