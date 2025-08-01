@@ -1,0 +1,93 @@
+name: Autonomous Value Discovery
+
+on:
+  schedule:
+    - cron: '0 */1 * * *'  # Every hour
+  workflow_dispatch:
+    inputs:
+      force_execution:
+        description: 'Force execution of highest priority item'
+        required: false
+        default: 'false'
+        type: boolean
+
+jobs:
+  discover-value:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev]"
+        pip install GitPython PyYAML
+        
+    - name: Run value discovery
+      id: discovery
+      run: |
+        python scripts/autonomous-discovery.py --scan-all
+        echo "items_discovered=$(cat .terragon/discovery-output.json | jq '.new_items | length')" >> $GITHUB_OUTPUT
+        
+    - name: Update backlog and metrics
+      run: |
+        python scripts/update-backlog.py
+        python scripts/update-value-metrics.py
+        
+    - name: Commit updates
+      run: |
+        git config --local user.email "autonomous@terragon.ai"
+        git config --local user.name "Terragon Autonomous SDLC"
+        git add BACKLOG.md .terragon/
+        if ! git diff --staged --quiet; then
+          git commit -m "🔍 Autonomous discovery: ${{ steps.discovery.outputs.items_discovered }} new items found"
+          git push
+        fi
+        
+  execute-highest-value:
+    needs: discover-value
+    runs-on: ubuntu-latest
+    if: github.event.inputs.force_execution == 'true' || (github.event_name == 'schedule' && needs.discover-value.outputs.items_discovered > '0')
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Set up execution environment
+      run: |
+        npm i -g @anthropic-ai/claude-code claude-flow@alpha
+        
+    - name: Execute highest value item
+      env:
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      run: |
+        npx claude-flow@alpha swarm "Execute the highest priority item from BACKLOG.md in repository ${PWD##*/}. Use the .terragon/ configuration for scoring and execution parameters. Focus on deliverable implementation with full testing and validation." --strategy autonomous --claude
+        
+    - name: Update execution metrics
+      run: |
+        python scripts/record-execution.py --success
+        
+    - name: Create execution report
+      run: |
+        echo "## 🤖 Autonomous Execution Report" > execution-report.md
+        echo "**Timestamp**: $(date)" >> execution-report.md
+        echo "**Repository**: ${{ github.repository }}" >> execution-report.md
+        echo "**Trigger**: ${{ github.event_name }}" >> execution-report.md
+        echo "" >> execution-report.md
+        
+    - name: Commit execution results
+      run: |
+        git config --local user.email "autonomous@terragon.ai"
+        git config --local user.name "Terragon Autonomous SDLC"
+        git add -A
+        git commit -m "🚀 Autonomous execution completed" || true
+        git push || true

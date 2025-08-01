@@ -1,0 +1,60 @@
+version: 2
+updates:
+  # Python dependencies
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"
+    open-pull-requests-limit: 10
+    reviewers:
+      - "analog-pde-team"
+    assignees:
+      - "security-team"
+    labels:
+      - "dependencies"
+      - "security"
+    allow:
+      - dependency-type: "direct"
+      - dependency-type: "indirect"
+    ignore:
+      - dependency-name: "jinja2"
+        versions: ["< 3.0"]
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+      
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "04:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "analog-pde-team"
+    labels:
+      - "github-actions"
+      - "security"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+      
+  # Docker dependencies
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday" 
+      time: "04:00"
+    open-pull-requests-limit: 5
+    reviewers:
+      - "analog-pde-team"
+    labels:
+      - "docker"
+      - "security"
+    commit-message:
+      prefix: "docker"
+      include: "scope"

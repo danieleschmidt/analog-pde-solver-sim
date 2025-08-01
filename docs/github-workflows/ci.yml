@@ -1,0 +1,98 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.9", "3.10", "3.11"]
+        
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ngspice iverilog verilator
+        
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e ".[dev,hardware]"
+        
+    - name: Run linting
+      run: |
+        black --check analog_pde_solver/ tests/
+        flake8 analog_pde_solver/ tests/
+        isort --check-only analog_pde_solver/ tests/
+        
+    - name: Run type checking
+      run: mypy analog_pde_solver/
+      
+    - name: Run tests with coverage
+      run: |
+        pytest --cov=analog_pde_solver --cov-report=xml --cov-report=term
+        
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.xml
+        
+  security:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install bandit safety pip-audit
+        
+    - name: Run security analysis
+      run: |
+        bandit -r analog_pde_solver/
+        safety check
+        pip-audit
+        
+  value-discovery:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+        
+    - name: Autonomous Value Discovery
+      run: |
+        echo "🔍 Discovering new value items..."
+        python scripts/autonomous-discovery.py --update-backlog
+        
+    - name: Commit backlog updates
+      run: |
+        git config --local user.email "autonomous@terragon.ai"
+        git config --local user.name "Terragon Autonomous SDLC"
+        git add BACKLOG.md .terragon/
+        git diff --staged --quiet || git commit -m "🤖 Autonomous value discovery update"
+        git push
