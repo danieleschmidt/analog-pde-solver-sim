@@ -1,50 +1,117 @@
 version: '3.8'
 
+networks:
+  analog-pde-net:
+    driver: bridge
+
+volumes:
+  spice-models:
+  build-cache:
+  test-results:
+
 services:
+  # Development environment
   dev:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
+      target: development
     volumes:
-      - .:/workspace
-      - ~/.ssh:/root/.ssh:ro
-    working_dir: /workspace
+      - .:/app
+      - ~/.ssh:/home/appuser/.ssh:ro
+      - ~/.gitconfig:/home/appuser/.gitconfig:ro
+      - build-cache:/app/.cache
+    working_dir: /app
     environment:
-      - PYTHONPATH=/workspace
+      - PYTHONPATH=/app
+      - DEBUG_MODE=true
+      - LOG_LEVEL=DEBUG
     ports:
       - "8888:8888"  # Jupyter
       - "8000:8000"  # Docs server
+      - "3000:3000"  # Development server
+    networks:
+      - analog-pde-net
     command: bash
     stdin_open: true
     tty: true
 
+  # Production environment
+  prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    environment:
+      - PYTHONPATH=/app
+      - DEBUG_MODE=false
+      - LOG_LEVEL=INFO
+    networks:
+      - analog-pde-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import analog_pde_solver; print('OK')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Testing environment
   test:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
+      target: development
     volumes:
-      - .:/workspace
-    working_dir: /workspace
+      - .:/app
+      - test-results:/app/test-results
+    working_dir: /app
     environment:
-      - PYTHONPATH=/workspace
-    command: pytest -v
+      - PYTHONPATH=/app
+      - COVERAGE_FILE=/app/test-results/.coverage
+    networks:
+      - analog-pde-net
+    command: >
+      bash -c "
+        pytest -v --cov=analog_pde_solver 
+        --cov-report=html:/app/test-results/htmlcov 
+        --cov-report=xml:/app/test-results/coverage.xml
+        --junit-xml=/app/test-results/junit.xml
+      "
 
+  # Fast testing (unit tests only)
+  test-fast:
+    extends: test
+    command: pytest -v -m "unit and not slow" --tb=short
+
+  # Performance testing
+  test-perf:
+    extends: test
+    command: pytest -v -m performance --benchmark-only --benchmark-json=/app/test-results/benchmark.json
+
+  # Documentation builder
   docs:
     build:
       context: .
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
+      target: development
     volumes:
-      - .:/workspace
-      - ./docs/_build:/workspace/docs/_build
-    working_dir: /workspace
+      - .:/app
+      - ./docs/_build:/app/docs/_build
+    working_dir: /app
     ports:
       - "8000:8000"
+    networks:
+      - analog-pde-net
     command: >
-      bash -c "cd docs && 
-               make html && 
-               cd _build/html && 
-               python -m http.server 8000 --bind 0.0.0.0"
+      bash -c "
+        cd docs && 
+        make html && 
+        cd _build/html && 
+        python -m http.server 8000 --bind 0.0.0.0
+      "
 
+  # SPICE simulation environment
   spice-sim:
     build:
       context: .
@@ -52,7 +119,60 @@ services:
     volumes:
       - .:/workspace
       - ./temp:/workspace/temp
+      - spice-models:/usr/share/ngspice/models/custom
     working_dir: /workspace
     environment:
       - SPICE_SIMULATOR=ngspice
+      - SPICE_LIB_DIR=/usr/share/ngspice/models
+      - DISPLAY=:99
+    networks:
+      - analog-pde-net
+    # Run X virtual framebuffer for GUI tools
+    command: bash -c "Xvfb :99 -screen 0 1024x768x24 & ngspice -b"
+
+  # Hardware testing environment
+  hardware:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: hardware
+    volumes:
+      - .:/app
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    working_dir: /app
+    environment:
+      - PYTHONPATH=/app
+      - DISPLAY=${DISPLAY}
+      - SPICE_SIMULATOR=ngspice
+    networks:
+      - analog-pde-net
     command: bash
+
+  # Jupyter notebook server
+  jupyter:
+    extends: dev
+    ports:
+      - "8888:8888"
+    command: >
+      bash -c "
+        jupyter lab 
+        --ip=0.0.0.0 
+        --port=8888 
+        --no-browser 
+        --allow-root 
+        --LabApp.token='' 
+        --LabApp.password=''
+      "
+
+  # Code quality checks
+  lint:
+    extends: test
+    command: >
+      bash -c "
+        black --check --diff analog_pde_solver/ tests/ &&
+        isort --check-only --diff analog_pde_solver/ tests/ &&
+        flake8 analog_pde_solver/ tests/ &&
+        mypy analog_pde_solver/ &&
+        bandit -r analog_pde_solver/ &&
+        safety check
+      "
