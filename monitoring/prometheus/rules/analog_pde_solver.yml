@@ -1,0 +1,140 @@
+# Prometheus alerting rules for Analog PDE Solver
+groups:
+  - name: analog_pde_solver.rules
+    rules:
+      # Application health alerts
+      - alert: AnalogPDESolverDown
+        expr: up{job="analog-pde-solver"} == 0
+        for: 30s
+        labels:
+          severity: critical
+          service: analog-pde-solver
+        annotations:
+          summary: "Analog PDE Solver is down"
+          description: "Analog PDE Solver instance {{ $labels.instance }} has been down for more than 30 seconds."
+
+      - alert: HighErrorRate
+        expr: rate(http_requests_total{job="analog-pde-solver",status=~"5.."}[5m]) > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          service: analog-pde-solver
+        annotations:
+          summary: "High error rate in Analog PDE Solver"
+          description: "Error rate is {{ $value }} errors per second on {{ $labels.instance }}"
+
+      # Performance alerts
+      - alert: HighResponseTime
+        expr: histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job="analog-pde-solver"}[5m])) > 5
+        for: 5m
+        labels:
+          severity: warning
+          service: analog-pde-solver
+        annotations:
+          summary: "High response time in Analog PDE Solver"
+          description: "95th percentile response time is {{ $value }}s on {{ $labels.instance }}"
+
+      - alert: HighMemoryUsage
+        expr: (process_resident_memory_bytes{job="analog-pde-solver"} / 1024 / 1024 / 1024) > 4
+        for: 10m
+        labels:
+          severity: warning
+          service: analog-pde-solver
+        annotations:
+          summary: "High memory usage"
+          description: "Memory usage is {{ $value }}GB on {{ $labels.instance }}"
+
+      - alert: HighCPUUsage
+        expr: rate(process_cpu_seconds_total{job="analog-pde-solver"}[5m]) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          service: analog-pde-solver
+        annotations:
+          summary: "High CPU usage"
+          description: "CPU usage is {{ $value }}% on {{ $labels.instance }}"
+
+      # PDE solver specific alerts
+      - alert: SlowConvergence
+        expr: analog_pde_solver_convergence_iterations > 1000
+        for: 1m
+        labels:
+          severity: warning
+          service: analog-pde-solver
+        annotations:
+          summary: "PDE solver slow convergence"
+          description: "PDE solver taking {{ $value }} iterations to converge on {{ $labels.instance }}"
+
+      - alert: ConvergenceFailure
+        expr: increase(analog_pde_solver_convergence_failures_total[5m]) > 5
+        for: 2m
+        labels:
+          severity: critical
+          service: analog-pde-solver
+        annotations:
+          summary: "Multiple PDE convergence failures"
+          description: "{{ $value }} convergence failures in the last 5 minutes on {{ $labels.instance }}"
+
+      - alert: SPICESimulationTimeout
+        expr: increase(spice_simulation_timeouts_total[10m]) > 3
+        for: 5m
+        labels:
+          severity: warning
+          service: spice-simulator
+        annotations:
+          summary: "SPICE simulation timeouts"
+          description: "{{ $value }} SPICE simulations timed out in the last 10 minutes"
+
+      # Hardware resource alerts
+      - alert: CrossbarArrayUtilizationHigh
+        expr: analog_pde_solver_crossbar_utilization > 0.9
+        for: 15m
+        labels:
+          severity: warning
+          service: analog-pde-solver
+        annotations:
+          summary: "High crossbar array utilization"
+          description: "Crossbar array utilization is {{ $value | humanizePercentage }} on {{ $labels.instance }}"
+
+      - alert: AnalogNoiseHigh
+        expr: analog_pde_solver_noise_level > 0.1
+        for: 5m
+        labels:
+          severity: warning
+          service: analog-pde-solver
+        annotations:
+          summary: "High analog noise level"
+          description: "Analog noise level is {{ $value }} on {{ $labels.instance }}"
+
+  - name: system.rules
+    rules:
+      # System resource alerts
+      - alert: HighDiskUsage
+        expr: (node_filesystem_size_bytes{fstype!="tmpfs"} - node_filesystem_free_bytes{fstype!="tmpfs"}) / node_filesystem_size_bytes{fstype!="tmpfs"} > 0.85
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "High disk usage"
+          description: "Disk usage is {{ $value | humanizePercentage }} on {{ $labels.instance }}"
+
+      - alert: SystemLoadHigh
+        expr: node_load15 > 2
+        for: 5m
+        labels:
+          severity: warning
+          service: system
+        annotations:
+          summary: "High system load"
+          description: "System load is {{ $value }} on {{ $labels.instance }}"
+
+      - alert: OutOfMemory
+        expr: (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes) < 0.1
+        for: 2m
+        labels:
+          severity: critical
+          service: system
+        annotations:
+          summary: "System running out of memory"
+          description: "Available memory is {{ $value | humanizePercentage }} on {{ $labels.instance }}"
