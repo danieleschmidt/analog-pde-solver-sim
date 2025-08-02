@@ -78,3 +78,59 @@ verilog-test:
 
 check-deps: spice-test verilog-test
 	@echo "Dependency check complete"
+
+# Docker targets
+.PHONY: docker-build docker-dev docker-test docker-clean
+
+docker-build:
+	docker build -t analog-pde-solver:latest .
+	docker build -t analog-pde-solver:dev --target development .
+	docker build -t analog-pde-solver:hardware --target hardware .
+
+docker-dev:
+	docker-compose up -d dev
+
+docker-test:
+	docker-compose run --rm test
+
+docker-test-fast:
+	docker-compose run --rm test-fast
+
+docker-perf:
+	docker-compose run --rm test-perf
+
+docker-docs:
+	docker-compose up -d docs
+	@echo "Documentation server running at http://localhost:8000"
+
+docker-jupyter:
+	docker-compose up -d jupyter
+	@echo "Jupyter server running at http://localhost:8888"
+
+docker-spice:
+	docker-compose run --rm spice-sim
+
+docker-hardware:
+	docker-compose run --rm hardware
+
+docker-lint:
+	docker-compose run --rm lint
+
+docker-clean:
+	docker-compose down -v
+	docker system prune -f
+	docker volume prune -f
+
+# Build automation
+.PHONY: build-all build-wheel build-sdist
+
+build-all: build-wheel build-sdist
+
+build-wheel:
+	python -m build --wheel
+
+build-sdist:
+	python -m build --sdist
+
+build-check:
+	python -m twine check dist/*
