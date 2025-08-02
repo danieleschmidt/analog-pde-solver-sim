@@ -1,0 +1,139 @@
+name: Bug Report
+description: File a bug report to help us improve the Analog PDE Solver
+title: "[Bug]: "
+labels: ["bug", "triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report! Please provide as much detail as possible.
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: Describe the bug...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what you expected to happen.
+      placeholder: What should have happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What actually happened instead?
+      placeholder: What actually happened?
+    validations:
+      required: true
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Component
+      description: Which component is affected?
+      options:
+        - Core Solver
+        - SPICE Simulation
+        - Hardware Testing
+        - Documentation
+        - Build System
+        - CI/CD
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: What version of the Analog PDE Solver are you running?
+      placeholder: "v0.3.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: |
+        Provide information about your environment:
+      value: |
+        - OS: [e.g. Ubuntu 22.04, macOS 13.0, Windows 11]
+        - Python version: [e.g. 3.11.0]
+        - NgSpice version: [if applicable]
+        - Verilog tools: [e.g. iverilog 11.0, verilator 4.228]
+        - Installation method: [pip, conda, docker, source]
+    validations:
+      required: true
+
+  - type: textarea
+    id: code
+    attributes:
+      label: Minimal Code Example
+      description: |
+        If applicable, provide a minimal code example that demonstrates the bug.
+        Use code blocks with syntax highlighting.
+      render: python
+      placeholder: |
+        from analog_pde_solver import AnalogPDESolver
+        
+        # Your minimal example here
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Error Logs
+      description: |
+        If applicable, copy and paste relevant error messages or logs.
+        Please use code blocks to format the output.
+      render: text
+      placeholder: Paste error logs here...
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: |
+        Add any other context about the problem here. Screenshots, 
+        performance data, or links to related issues are helpful.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched existing issues to ensure this is not a duplicate
+          required: true
+        - label: I have provided a clear and concise description
+          required: true
+        - label: I have included steps to reproduce the issue
+          required: true
+        - label: I have specified my environment details
+          required: true
+        - label: I have included relevant error messages or logs
+          required: false
