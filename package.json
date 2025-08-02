@@ -1,0 +1,54 @@
+{
+  "name": "analog-pde-solver-sim",
+  "version": "0.3.0",
+  "description": "Python + Verilog playground for analog accelerators solving PDEs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/danieleschmidt/analog-pde-solver-sim.git"
+  },
+  "scripts": {
+    "test": "python -m pytest",
+    "test:fast": "python -m pytest -m 'not slow and not hardware'",
+    "test:coverage": "python -m pytest --cov=analog_pde_solver --cov-report=html",
+    "lint": "python -m flake8 analog_pde_solver/ tests/",
+    "lint:fix": "python -m black analog_pde_solver/ tests/ && python -m isort analog_pde_solver/ tests/",
+    "typecheck": "python -m mypy analog_pde_solver/",
+    "security": "python -m bandit -r analog_pde_solver/ && python -m safety check",
+    "docs:build": "cd docs && make html",
+    "docs:serve": "cd docs/_build/html && python -m http.server 8000",
+    "clean": "find . -type d -name __pycache__ -exec rm -rf {} + && find . -type f -name '*.pyc' -delete && rm -rf build/ dist/ *.egg-info/ .pytest_cache/ .mypy_cache/ .coverage htmlcov/",
+    "dev:setup": "pip install -e '.[dev,docs,hardware]' && pre-commit install",
+    "dev:check-deps": "which ngspice && which iverilog && which verilator",
+    "build": "python -m build",
+    "install": "pip install -e .",
+    "format": "python -m black analog_pde_solver/ tests/ && python -m isort analog_pde_solver/ tests/",
+    "validate": "npm run lint && npm run typecheck && npm run security && npm run test:fast"
+  },
+  "keywords": [
+    "analog-computing",
+    "pde-solver",
+    "spice-simulation",
+    "verilog",
+    "crossbar-arrays",
+    "scientific-computing"
+  ],
+  "author": "Analog PDE Team",
+  "license": "MIT",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^17.0.0",
+    "@commitlint/config-conventional": "^17.0.0",
+    "husky": "^8.0.0"
+  },
+  "commitlint": {
+    "extends": ["@commitlint/config-conventional"]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pre-commit run --all-files",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  }
+}
