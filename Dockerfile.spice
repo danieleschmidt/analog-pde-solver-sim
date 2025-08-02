@@ -1,0 +1,53 @@
+# Specialized Dockerfile for SPICE simulation
+FROM ubuntu:22.04
+
+# Prevent interactive prompts during package installation
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install SPICE and related tools
+RUN apt-get update && apt-get install -y \
+    ngspice \
+    ngspice-doc \
+    geda-gspiceui \
+    python3 \
+    python3-pip \
+    python3-dev \
+    build-essential \
+    git \
+    wget \
+    curl \
+    gnuplot \
+    xvfb \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Python packages for SPICE integration
+RUN pip3 install --no-cache-dir \
+    numpy \
+    scipy \
+    matplotlib \
+    PySpice \
+    ahkab \
+    scikit-rf
+
+# Create SPICE library directory
+RUN mkdir -p /usr/share/ngspice/models/custom
+
+# Copy SPICE models and libraries
+COPY --from=analog_pde_solver_base /app/spice_models/ /usr/share/ngspice/models/custom/
+
+# Set up environment
+ENV SPICE_LIB_DIR=/usr/share/ngspice/models \
+    SPICE_SIMULATOR=ngspice \
+    DISPLAY=:99
+
+# Create non-root user
+RUN useradd -m -s /bin/bash spiceuser && \
+    chown -R spiceuser:spiceuser /usr/share/ngspice
+
+# Working directory
+WORKDIR /workspace
+
+USER spiceuser
+
+# Default command runs SPICE in batch mode
+CMD ["ngspice", "-b"]

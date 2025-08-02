@@ -1,0 +1,162 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "Analog PDE Solver - Overview",
+    "tags": ["analog-pde-solver", "overview"],
+    "style": "dark",
+    "timezone": "browser",
+    "refresh": "30s",
+    "schemaVersion": 27,
+    "version": 1,
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "panels": [
+      {
+        "id": 1,
+        "title": "System Health",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "up{job=\"analog-pde-solver\"}",
+            "legendFormat": "Instance Status"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "thresholds": {
+              "steps": [
+                {"color": "red", "value": 0},
+                {"color": "green", "value": 1}
+              ]
+            },
+            "mappings": [
+              {"options": {"0": {"text": "DOWN"}}, "type": "value"},
+              {"options": {"1": {"text": "UP"}}, "type": "value"}
+            ]
+          }
+        },
+        "gridPos": {"h": 4, "w": 6, "x": 0, "y": 0}
+      },
+      {
+        "id": 2,
+        "title": "Request Rate",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(http_requests_total{job=\"analog-pde-solver\"}[5m])",
+            "legendFormat": "{{method}} {{status}}"
+          }
+        ],
+        "yAxes": [
+          {"label": "Requests/sec", "min": 0}
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 6, "y": 0}
+      },
+      {
+        "id": 3,
+        "title": "Response Time (95th percentile)",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "histogram_quantile(0.95, rate(http_request_duration_seconds_bucket{job=\"analog-pde-solver\"}[5m]))",
+            "legendFormat": "95th percentile"
+          }
+        ],
+        "yAxes": [
+          {"label": "Seconds", "min": 0}
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 18, "y": 0}
+      },
+      {
+        "id": 4,
+        "title": "PDE Solver Performance",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "analog_pde_solver_convergence_iterations",
+            "legendFormat": "Convergence Iterations"
+          },
+          {
+            "expr": "analog_pde_solver_solve_duration_seconds",
+            "legendFormat": "Solve Duration (s)"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}
+      },
+      {
+        "id": 5,
+        "title": "Memory Usage",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "process_resident_memory_bytes{job=\"analog-pde-solver\"} / 1024 / 1024",
+            "legendFormat": "RSS Memory (MB)"
+          }
+        ],
+        "yAxes": [
+          {"label": "Memory (MB)", "min": 0}
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8}
+      },
+      {
+        "id": 6,
+        "title": "Crossbar Array Utilization",
+        "type": "graph", 
+        "targets": [
+          {
+            "expr": "analog_pde_solver_crossbar_utilization",
+            "legendFormat": "Utilization %"
+          }
+        ],
+        "yAxes": [
+          {"label": "Utilization", "min": 0, "max": 1}
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16}
+      },
+      {
+        "id": 7,
+        "title": "SPICE Simulation Status",
+        "type": "table",
+        "targets": [
+          {
+            "expr": "spice_simulations_total",
+            "legendFormat": "Total Simulations",
+            "format": "table"
+          },
+          {
+            "expr": "spice_simulation_failures_total",
+            "legendFormat": "Failed Simulations",
+            "format": "table"
+          },
+          {
+            "expr": "spice_simulation_duration_seconds",
+            "legendFormat": "Avg Duration (s)",
+            "format": "table"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16}
+      },
+      {
+        "id": 8,
+        "title": "Error Rate",
+        "type": "graph",
+        "targets": [
+          {
+            "expr": "rate(http_requests_total{job=\"analog-pde-solver\",status=~\"5..\"}[5m])",
+            "legendFormat": "5xx Errors/sec"
+          },
+          {
+            "expr": "rate(analog_pde_solver_convergence_failures_total[5m])",
+            "legendFormat": "Convergence Failures/sec"
+          }
+        ],
+        "gridPos": {"h": 8, "w": 24, "x": 0, "y": 24}
+      }
+    ]
+  }
+}

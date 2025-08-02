@@ -1,0 +1,267 @@
+{
+  "project": {
+    "name": "analog-pde-solver-sim",
+    "version": "0.3.0",
+    "description": "Python + Verilog playground for analog accelerators solving PDEs",
+    "created_date": "2025-01-01",
+    "last_updated": "2025-08-02",
+    "repository": "https://github.com/danieleschmidt/analog-pde-solver-sim"
+  },
+  "metrics": {
+    "code_quality": {
+      "test_coverage": {
+        "target": 90,
+        "current": 85,
+        "trend": "increasing",
+        "last_measured": "2025-08-02"
+      },
+      "code_duplication": {
+        "target": 5,
+        "current": 3.2,
+        "unit": "percentage",
+        "trend": "stable"
+      },
+      "technical_debt_ratio": {
+        "target": 5,
+        "current": 4.1,
+        "unit": "percentage",
+        "trend": "decreasing"
+      },
+      "cyclomatic_complexity": {
+        "target": 10,
+        "current": 7.3,
+        "unit": "average",
+        "trend": "stable"
+      },
+      "maintainability_index": {
+        "target": 85,
+        "current": 88,
+        "unit": "score",
+        "trend": "increasing"
+      }
+    },
+    "performance": {
+      "solver_performance": {
+        "poisson_2d_64x64": {
+          "target_time_ms": 100,
+          "current_time_ms": 85,
+          "trend": "improving",
+          "energy_efficiency_target": 1000,
+          "energy_efficiency_current": 1200,
+          "unit": "operations_per_joule"
+        },
+        "heat_3d_128x128": {
+          "target_time_ms": 500,
+          "current_time_ms": 420,
+          "trend": "improving"
+        },
+        "navier_stokes_256x256": {
+          "target_time_ms": 2000,
+          "current_time_ms": 1800,
+          "trend": "stable"
+        }
+      },
+      "memory_usage": {
+        "peak_memory_mb": {
+          "target": 2048,
+          "current": 1856,
+          "trend": "stable"
+        },
+        "memory_efficiency": {
+          "target": 0.8,
+          "current": 0.85,
+          "unit": "ratio",
+          "trend": "improving"
+        }
+      },
+      "convergence_metrics": {
+        "average_iterations": {
+          "target": 100,
+          "current": 85,
+          "trend": "improving"
+        },
+        "convergence_success_rate": {
+          "target": 95,
+          "current": 97.2,
+          "unit": "percentage",
+          "trend": "stable"
+        }
+      }
+    },
+    "reliability": {
+      "uptime": {
+        "target": 99.9,
+        "current": 99.95,
+        "unit": "percentage",
+        "trend": "stable"
+      },
+      "error_rate": {
+        "target": 0.1,
+        "current": 0.05,
+        "unit": "percentage",
+        "trend": "improving"
+      },
+      "mean_time_to_recovery": {
+        "target": 300,
+        "current": 180,
+        "unit": "seconds",
+        "trend": "improving"
+      }
+    },
+    "security": {
+      "vulnerability_count": {
+        "critical": 0,
+        "high": 0,
+        "medium": 1,
+        "low": 3,
+        "target_critical": 0,
+        "target_high": 0,
+        "trend": "stable"
+      },
+      "dependency_health": {
+        "outdated_dependencies": 2,
+        "security_advisories": 0,
+        "license_compliance": 100,
+        "unit": "percentage"
+      },
+      "code_scanning": {
+        "sast_findings": 0,
+        "secret_detection_alerts": 0,
+        "last_scan": "2025-08-02"
+      }
+    },
+    "development": {
+      "velocity": {
+        "commits_per_week": {
+          "target": 25,
+          "current": 28,
+          "trend": "increasing"
+        },
+        "pull_requests_per_week": {
+          "target": 5,
+          "current": 6,
+          "trend": "stable"
+        },
+        "issues_resolved_per_week": {
+          "target": 8,
+          "current": 10,
+          "trend": "increasing"
+        }
+      },
+      "quality_gates": {
+        "pr_review_coverage": {
+          "target": 100,
+          "current": 100,
+          "unit": "percentage"
+        },
+        "automated_test_pass_rate": {
+          "target": 95,
+          "current": 98,
+          "unit": "percentage"
+        },
+        "deployment_success_rate": {
+          "target": 95,
+          "current": 100,
+          "unit": "percentage"
+        }
+      },
+      "cycle_time": {
+        "code_to_deployment": {
+          "target": 1440,
+          "current": 720,
+          "unit": "minutes",
+          "trend": "improving"
+        },
+        "issue_to_resolution": {
+          "target": 10080,
+          "current": 4320,
+          "unit": "minutes",
+          "trend": "improving"
+        }
+      }
+    },
+    "research_specific": {
+      "analog_accuracy": {
+        "spice_correlation": {
+          "target": 95,
+          "current": 97.5,
+          "unit": "percentage",
+          "trend": "stable"
+        },
+        "hardware_validation": {
+          "target": 90,
+          "current": 92,
+          "unit": "percentage",
+          "trend": "improving"
+        }
+      },
+      "innovation_metrics": {
+        "new_algorithms_per_quarter": {
+          "target": 2,
+          "current": 3,
+          "trend": "exceeding"
+        },
+        "research_papers_per_year": {
+          "target": 3,
+          "current": 4,
+          "trend": "exceeding"
+        },
+        "patent_applications": {
+          "current": 1,
+          "target": 2
+        }
+      },
+      "collaboration": {
+        "external_contributors": {
+          "current": 5,
+          "target": 10,
+          "trend": "increasing"
+        },
+        "academic_partnerships": {
+          "current": 2,
+          "target": 5
+        }
+      }
+    }
+  },
+  "automated_tracking": {
+    "enabled": true,
+    "update_frequency": "daily",
+    "data_sources": [
+      "github_api",
+      "codecov",
+      "sonarqube",
+      "prometheus",
+      "grafana",
+      "dependabot"
+    ],
+    "alerts": {
+      "performance_regression": {
+        "threshold": 10,
+        "unit": "percentage",
+        "enabled": true
+      },
+      "coverage_drop": {
+        "threshold": 5,
+        "unit": "percentage",
+        "enabled": true
+      },
+      "security_vulnerabilities": {
+        "critical_threshold": 0,
+        "high_threshold": 0,
+        "enabled": true
+      }
+    }
+  },
+  "historical_data": {
+    "data_retention_days": 365,
+    "backup_frequency": "weekly",
+    "export_formats": ["json", "csv", "prometheus"]
+  },
+  "reporting": {
+    "dashboard_url": "https://grafana.company.com/d/analog-pde-solver",
+    "weekly_reports": true,
+    "monthly_summaries": true,
+    "quarterly_reviews": true
+  }
+}

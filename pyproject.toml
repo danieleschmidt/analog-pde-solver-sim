@@ -34,12 +34,20 @@ dependencies = [
 dev = [
     "pytest>=6.0.0",
     "pytest-cov>=3.0.0",
+    "pytest-xdist>=3.0.0",
+    "pytest-mock>=3.0.0",
     "black>=22.0.0",
+    "isort>=5.0.0",
     "flake8>=4.0.0",
+    "flake8-docstrings>=1.6.0",
+    "flake8-type-checking>=2.0.0",
     "mypy>=0.910",
     "bandit>=1.7.0",
     "safety>=2.0.0",
     "pip-audit>=2.6.0",
+    "pre-commit>=2.20.0",
+    "build>=0.8.0",
+    "twine>=4.0.0",
 ]
 docs = [
     "sphinx>=4.0.0",
@@ -118,3 +126,30 @@ exclude_lines = [
     "raise NotImplementedError",
     "if __name__ == .__main__.:",
 ]
+
+[tool.isort]
+profile = "black"
+multi_line_output = 3
+line_length = 88
+known_first_party = ["analog_pde_solver"]
+sections = ["FUTURE", "STDLIB", "THIRDPARTY", "FIRSTPARTY", "LOCALFOLDER"]
+
+[tool.flake8]
+max-line-length = 88
+extend-ignore = ["E203", "W503", "E501"]
+per-file-ignores = [
+    "__init__.py:F401",
+    "tests/*:D103,D100",
+]
+exclude = [
+    ".git",
+    "__pycache__",
+    "build",
+    "dist",
+    ".tox",
+    ".eggs",
+    "*.egg-info"
+]
+
+[tool.bandit.assert_used]
+skips = ["*_test.py", "*/test_*.py"]

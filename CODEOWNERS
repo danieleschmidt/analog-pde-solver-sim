@@ -1,0 +1,54 @@
+# Code ownership for Analog PDE Solver project
+# This file defines who should review changes to different parts of the codebase
+
+# Global ownership - require review from core team
+* @terragon-labs/analog-pde-core
+
+# Core algorithm development
+/analog_pde_solver/core/ @terragon-labs/algorithm-team @terragon-labs/analog-pde-core
+
+# SPICE simulation components
+/analog_pde_solver/spice/ @terragon-labs/hardware-team @terragon-labs/analog-pde-core
+
+# Build and deployment configuration
+/Dockerfile* @terragon-labs/devops-team
+/docker-compose*.yml @terragon-labs/devops-team
+/.github/workflows/ @terragon-labs/devops-team @terragon-labs/analog-pde-core
+/docs/github-workflows/ @terragon-labs/devops-team
+
+# Documentation - allow broader community contribution
+/docs/ @terragon-labs/docs-team
+/README.md @terragon-labs/docs-team @terragon-labs/analog-pde-core
+/*.md @terragon-labs/docs-team
+
+# Security-sensitive files - require security team review
+/SECURITY.md @terragon-labs/security-team @terragon-labs/analog-pde-core
+/.github/workflows/security.yml @terragon-labs/security-team
+/monitoring/prometheus/rules/ @terragon-labs/security-team @terragon-labs/devops-team
+
+# Testing infrastructure
+/tests/ @terragon-labs/qa-team @terragon-labs/analog-pde-core
+/pytest*.ini @terragon-labs/qa-team
+/tox.ini @terragon-labs/qa-team
+
+# Dependency and package management
+/requirements.txt @terragon-labs/analog-pde-core
+/pyproject.toml @terragon-labs/analog-pde-core
+/setup.py @terragon-labs/analog-pde-core
+
+# Automation and metrics
+/automation/ @terragon-labs/devops-team @terragon-labs/analog-pde-core
+/metrics/ @terragon-labs/devops-team @terragon-labs/analog-pde-core
+/.github/project-metrics.json @terragon-labs/devops-team
+
+# Research and benchmarking
+/benchmark_results/ @terragon-labs/research-team
+/scripts/run-benchmarks.py @terragon-labs/research-team @terragon-labs/analog-pde-core
+
+# Examples and tutorials
+/examples/ @terragon-labs/docs-team @terragon-labs/research-team
+/docs/tutorials/ @terragon-labs/docs-team
+
+# Hardware-specific code and documentation  
+/docs/hardware/ @terragon-labs/hardware-team
+/tests/hardware/ @terragon-labs/hardware-team @terragon-labs/qa-team

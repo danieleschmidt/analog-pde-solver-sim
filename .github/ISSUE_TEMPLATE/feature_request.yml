@@ -1,0 +1,158 @@
+name: Feature Request
+description: Suggest a new feature or enhancement for the Analog PDE Solver
+title: "[Feature]: "
+labels: ["enhancement", "triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a new feature! Please provide detailed information to help us understand your request.
+
+  - type: textarea
+    id: summary
+    attributes:
+      label: Feature Summary
+      description: A clear and concise description of the feature you'd like to see.
+      placeholder: Briefly describe the feature...
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: |
+        What problem does this feature solve? Is your feature request related to a problem?
+      placeholder: I'm always frustrated when...
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: |
+        Describe the solution you'd like to see implemented.
+        Be as detailed as possible about the desired behavior.
+      placeholder: I would like to see...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Feature Category
+      description: Which category does this feature belong to?
+      options:
+        - Algorithm Enhancement
+        - SPICE Integration
+        - Hardware Support
+        - Performance Optimization
+        - User Interface
+        - Documentation
+        - Testing
+        - Build/Deployment
+        - API/SDK
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature to you?
+      options:
+        - Low - Nice to have
+        - Medium - Would be helpful
+        - High - Important for my use case
+        - Critical - Blocking my work
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: |
+        Describe any alternative solutions or features you've considered.
+        Have you found workarounds?
+      placeholder: I've considered...
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Use Cases and Examples
+      description: |
+        Provide specific use cases or examples of how this feature would be used.
+        Include code examples if applicable.
+      render: python
+      placeholder: |
+        # Example usage
+        solver = AnalogPDESolver()
+        result = solver.new_feature(...)
+
+  - type: textarea
+    id: implementation
+    attributes:
+      label: Implementation Ideas
+      description: |
+        If you have ideas about how this feature could be implemented, 
+        please share them. This is optional but helpful.
+      placeholder: This could be implemented by...
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact Assessment
+      description: |
+        How would this feature impact:
+        - Performance
+        - Memory usage
+        - API compatibility
+        - User experience
+      placeholder: |
+        Performance: ...
+        Memory: ...
+        Compatibility: ...
+        UX: ...
+
+  - type: checkboxes
+    id: research
+    attributes:
+      label: Research Application
+      description: Is this feature related to research applications? (Check all that apply)
+      options:
+        - label: Academic research
+        - label: Industrial applications
+        - label: Hardware validation
+        - label: Algorithm development
+        - label: Performance benchmarking
+        - label: Educational use
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: |
+        Add any other context, screenshots, research papers, or references 
+        about the feature request here.
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Checklist
+      description: Please confirm the following
+      options:
+        - label: I have searched existing issues to ensure this is not a duplicate
+          required: true
+        - label: I have provided a clear problem statement and proposed solution
+          required: true
+        - label: I have considered the impact of this feature
+          required: true
+        - label: I have provided specific use cases or examples
+          required: true
+        - label: I am willing to help test this feature when implemented
+          required: false
