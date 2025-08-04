@@ -503,7 +503,7 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 ```bibtex
 @article{analog_pde_solver_sim,
   title={Analog In-Memory Computing for Efficient PDE Solving},
-  author={Your Name},
+  author={Daniel Schmidt},
   journal={Nature Electronics},
   year={2025}
 }
