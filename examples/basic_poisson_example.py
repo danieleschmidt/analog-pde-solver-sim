@@ -1,8 +1,16 @@
 #!/usr/bin/env python3
 """Basic Poisson equation solver example using analog crossbar."""
 
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
+
 import numpy as np
-import matplotlib.pyplot as plt
+try:
+    import matplotlib.pyplot as plt
+    HAS_MATPLOTLIB = True
+except ImportError:
+    HAS_MATPLOTLIB = False
 from analog_pde_solver import AnalogPDESolver, PoissonEquation
 
 
@@ -13,9 +21,9 @@ def main():
     
     # Define Poisson equation: ∇²φ = -ρ/ε₀
     pde = PoissonEquation(
-        domain_size=64,
-        boundary_conditions="dirichlet",
-        source_function=lambda x, y: np.exp(-(x**2 + y**2))
+        domain_size=(64,),
+        boundary_conditions="dirichlet", 
+        source_function=lambda x, y: np.sin(np.pi * x) * np.exp(-x**2)
     )
     
     print(f"Problem size: {pde.domain_size}")
@@ -54,7 +62,7 @@ def main():
     print(f"  Digital solution norm: {np.linalg.norm(digital_solution):.4f}")
     
     # Plot comparison
-    try:
+    if HAS_MATPLOTLIB:
         fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(15, 4))
         
         x = np.linspace(0, 1, len(digital_solution))
@@ -82,8 +90,7 @@ def main():
         plt.tight_layout()
         plt.savefig('poisson_comparison.png', dpi=150, bbox_inches='tight')
         print(f"\nPlot saved as 'poisson_comparison.png'")
-        
-    except ImportError:
+    else:
         print("\nMatplotlib not available, skipping visualization")
     
     print("\nExample completed successfully!")
