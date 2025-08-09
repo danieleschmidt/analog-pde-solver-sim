@@ -6,7 +6,7 @@ from typing import Dict, Any, List, Optional, Tuple
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 import threading
 from dataclasses import dataclass
-from ..utils.logging_config import get_logger, PerformanceMonitor
+from analog_pde_solver.utils.logging_config import get_logger, PerformanceMonitor
 
 
 @dataclass
