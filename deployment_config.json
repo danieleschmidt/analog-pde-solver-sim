@@ -1,0 +1,26 @@
+{
+  "deployment": {
+    "environment": "production",
+    "scaling": {
+      "min_instances": 2,
+      "max_instances": 10,
+      "cpu_threshold": 70,
+      "memory_threshold": 80
+    },
+    "monitoring": {
+      "health_check_interval": 30,
+      "metrics_collection": true,
+      "logging_level": "INFO"
+    },
+    "security": {
+      "enable_ssl": true,
+      "authentication_required": true,
+      "rate_limiting": true
+    },
+    "quality_gates": {
+      "minimum_test_coverage": 85,
+      "performance_threshold": "5s",
+      "security_scan_required": true
+    }
+  }
+}
