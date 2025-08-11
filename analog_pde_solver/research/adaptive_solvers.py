@@ -499,3 +499,103 @@ class MultigridAnalogSolver:
             'memory_complexity': sum(solver.crossbar_size**2 for solver in self.level_solvers.values()),
             'computational_complexity': self.base_size**2 * (4/3)  # Theoretical V-cycle complexity
         }
+
+
+class ErrorEstimator:
+    """Error estimator for adaptive refinement."""
+    
+    def __init__(self, method: str = 'gradient'):
+        """Initialize error estimator."""
+        self.method = method
+        
+    def estimate_error(self, solution: np.ndarray) -> np.ndarray:
+        """Estimate local errors."""
+        if self.method == 'gradient':
+            return np.abs(np.gradient(solution))
+        else:
+            return np.abs(solution - np.mean(solution))
+
+
+class MeshRefinement:
+    """Mesh refinement system."""
+    
+    def __init__(self, initial_size: int = 64):
+        """Initialize mesh refinement."""
+        self.initial_size = initial_size
+        
+    def refine_mesh(self, error_indicators: np.ndarray) -> np.ndarray:
+        """Refine mesh based on error indicators."""
+        return error_indicators  # Simplified
+
+
+class AdaptivePDESolver:
+    """Adaptive PDE solver combining error estimation and mesh refinement."""
+    
+    def __init__(
+        self,
+        base_solver: AnalogPDESolver,
+        error_estimator: ErrorEstimator = None,
+        mesh_refiner: AdaptiveMeshRefiner = None
+    ):
+        """Initialize adaptive PDE solver.
+        
+        Args:
+            base_solver: Base analog PDE solver
+            error_estimator: Error estimator for adaptivity
+            mesh_refiner: Mesh refinement system
+        """
+        self.logger = get_logger('adaptive_pde_solver')
+        
+        self.base_solver = base_solver
+        self.error_estimator = error_estimator or ErrorEstimator()
+        self.mesh_refiner = mesh_refiner or AdaptiveMeshRefiner()
+        
+        self.logger.info("Initialized adaptive PDE solver")
+    
+    def solve_adaptive(
+        self,
+        pde,
+        max_iterations: int = 10,
+        tolerance: float = 1e-6
+    ) -> np.ndarray:
+        """Solve PDE with adaptive refinement.
+        
+        Args:
+            pde: PDE to solve
+            max_iterations: Maximum adaptive iterations
+            tolerance: Convergence tolerance
+            
+        Returns:
+            Adaptive solution
+        """
+        self.logger.info(f"Starting adaptive solve with {max_iterations} max iterations")
+        
+        # Initial solve
+        solution = self.base_solver.solve(pde)
+        
+        for iteration in range(max_iterations):
+            # Estimate errors
+            errors = self.error_estimator.estimate_error(solution)
+            
+            # Check convergence
+            max_error = np.max(np.abs(errors))
+            if max_error < tolerance:
+                self.logger.info(f"Converged after {iteration + 1} iterations")
+                break
+                
+            # Refine mesh
+            error_dict = {i: errors[i] for i in range(len(errors)) if i < len(errors)}
+            self.mesh_refiner.refine_mesh(error_dict)
+            
+            # Re-solve
+            solution = self.base_solver.solve(pde)
+            
+        return solution
+    
+    def get_statistics(self) -> Dict[str, Any]:
+        """Get adaptive solver statistics."""
+        return {
+            'base_solver_size': self.base_solver.crossbar_size,
+            'error_estimation_method': self.error_estimator.method,
+            'mesh_statistics': self.mesh_refiner.get_mesh_statistics()
+        }

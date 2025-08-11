@@ -21,6 +21,10 @@ class AnalogCrossbarArray:
         self.g_positive = np.zeros((rows, cols))
         self.g_negative = np.zeros((rows, cols))
         
+        # Default conductance limits
+        self.g_min = 1e-9  # 1nS
+        self.g_max = 1e-6  # 1μS
+        
     def program_conductances(self, target_matrix: np.ndarray) -> None:
         """Map target matrix to positive/negative conductance pairs."""
         g_min, g_max = 1e-9, 1e-6  # 1nS to 1μS
@@ -46,6 +50,16 @@ class AnalogCrossbarArray:
         noise = self._compute_noise(output_current)
         
         return output_current + noise
+    
+    @property
+    def conductance_matrix(self) -> np.ndarray:
+        """Get the effective conductance matrix (differential)."""
+        return self.g_positive - self.g_negative
+    
+    @conductance_matrix.setter
+    def conductance_matrix(self, matrix: np.ndarray) -> None:
+        """Set the conductance matrix by programming it."""
+        self.program_conductances(matrix)
         
     def _scale_to_conductance(
         self, 
