@@ -1,0 +1,215 @@
+{
+  "timestamp": "2025-08-12 16:55:42",
+  "system_info": {
+    "python_version": "3.12.3 (main, Jun 18 2025, 17:59:45) [GCC 13.3.0]",
+    "platform": "linux",
+    "numpy_version": "1.26.4"
+  },
+  "summary": {
+    "total_benchmarks": 6,
+    "successful_benchmarks": 6,
+    "failed_benchmarks": 0,
+    "total_benchmark_time": 0.18751239776611328,
+    "success_rate": 1.0
+  },
+  "performance_summary": {
+    "scaling_efficiency": "excellent",
+    "memory_efficiency": "unknown",
+    "convergence_quality": "poor"
+  },
+  "detailed_results": [
+    {
+      "solver_type": "basic",
+      "test_cases": [
+        {
+          "size": 16,
+          "solve_time": 0.004960060119628906,
+          "solution_norm": 27.2298948936516,
+          "success": true
+        },
+        {
+          "size": 32,
+          "solve_time": 0.0046198368072509766,
+          "solution_norm": 39.10444464868584,
+          "success": true
+        },
+        {
+          "size": 64,
+          "solve_time": 0.006010770797729492,
+          "solution_norm": 55.77409733997348,
+          "success": true
+        }
+      ],
+      "benchmark_name": "Basic Solver Performance",
+      "total_duration": 0.016217947006225586,
+      "status": "completed"
+    },
+    {
+      "solver_type": "robust",
+      "test_cases": [
+        {
+          "size": 16,
+          "solve_time": 0.008021116256713867,
+          "solution_norm": 0.28825760206162176,
+          "iterations": 100,
+          "convergence_rate": 7.099339977813432e-08,
+          "crossbar_health": "failed: shapes (16,16) and (10,) not aligned: 16 (dim 1) != 10 (dim 0)",
+          "success": true
+        },
+        {
+          "size": 32,
+          "solve_time": 0.008625984191894531,
+          "solution_norm": 0.4276186248151229,
+          "iterations": 100,
+          "convergence_rate": 7.430795540862017e-08,
+          "crossbar_health": "failed: shapes (32,32) and (10,) not aligned: 32 (dim 1) != 10 (dim 0)",
+          "success": true
+        },
+        {
+          "size": 64,
+          "solve_time": 0.009132623672485352,
+          "solution_norm": 0.6112423664700773,
+          "iterations": 100,
+          "convergence_rate": 7.671039912462244e-08,
+          "crossbar_health": "failed: shapes (64,64) and (10,) not aligned: 64 (dim 1) != 10 (dim 0)",
+          "success": true
+        }
+      ],
+      "benchmark_name": "Robust Solver Performance",
+      "total_duration": 0.0310361385345459,
+      "status": "completed"
+    },
+    {
+      "scaling_type": "problem_size",
+      "measurements": [
+        {
+          "size": 8,
+          "complexity": 64,
+          "mean_time": 0.0026765664418538413,
+          "std_time": 0.0003577302327064091,
+          "min_time": 0.0023818016052246094,
+          "max_time": 0.0031800270080566406
+        },
+        {
+          "size": 16,
+          "complexity": 256,
+          "mean_time": 0.002378543217976888,
+          "std_time": 0.0001088765415757278,
+          "min_time": 0.0022623538970947266,
+          "max_time": 0.002524137496948242
+        },
+        {
+          "size": 32,
+          "complexity": 1024,
+          "mean_time": 0.0029512246449788413,
+          "std_time": 0.0001658736996799615,
+          "min_time": 0.0027620792388916016,
+          "max_time": 0.0031659603118896484
+        },
+        {
+          "size": 64,
+          "complexity": 4096,
+          "mean_time": 0.0031572182973225913,
+          "std_time": 3.339751782329988e-06,
+          "min_time": 0.0031528472900390625,
+          "max_time": 0.0031609535217285156
+        },
+        {
+          "size": 128,
+          "complexity": 16384,
+          "mean_time": 0.00570988655090332,
+          "std_time": 0.0004937140481445963,
+          "min_time": 0.005245685577392578,
+          "max_time": 0.0063936710357666016
+        }
+      ],
+      "benchmark_name": "Scaling Performance",
+      "total_duration": 0.053092002868652344,
+      "status": "completed"
+    },
+    {
+      "solver_type": "navier_stokes",
+      "test_cases": [
+        {
+          "resolution": [
+            16,
+            16
+          ],
+          "timesteps": 5,
+          "total_time": 0.014637947082519531,
+          "time_per_step": 0.0029275894165039064,
+          "avg_power_mw": 7.0,
+          "energy_per_iter_nj": 70000.0,
+          "success": true
+        },
+        {
+          "resolution": [
+            32,
+            32
+          ],
+          "timesteps": 5,
+          "total_time": 0.01555013656616211,
+          "time_per_step": 0.003110027313232422,
+          "avg_power_mw": 7.0,
+          "energy_per_iter_nj": 70000.0,
+          "success": true
+        }
+      ],
+      "benchmark_name": "Navier-Stokes Performance",
+      "total_duration": 0.0311434268951416,
+      "status": "completed"
+    },
+    {
+      "measurement_type": "memory_usage",
+      "measurements": [],
+      "error": "psutil not available for memory measurements",
+      "benchmark_name": "Memory Usage",
+      "total_duration": 0.00039505958557128906,
+      "status": "completed"
+    },
+    {
+      "analysis_type": "convergence",
+      "test_cases": [
+        {
+          "threshold": 0.001,
+          "solve_time": 0.013455390930175781,
+          "iterations_used": 200,
+          "final_error": 0.004381716070002887,
+          "converged": true,
+          "convergence_rate": 7.350146237500973e-08,
+          "success": true
+        },
+        {
+          "threshold": 0.0001,
+          "solve_time": 0.013385534286499023,
+          "iterations_used": 200,
+          "final_error": 0.004381716070002887,
+          "converged": true,
+          "convergence_rate": 7.350146237500973e-08,
+          "success": true
+        },
+        {
+          "threshold": 1e-05,
+          "solve_time": 0.013401031494140625,
+          "iterations_used": 200,
+          "final_error": 0.004381716070002887,
+          "converged": true,
+          "convergence_rate": 7.350146237500973e-08,
+          "success": true
+        },
+        {
+          "threshold": 1e-06,
+          "solve_time": 0.013946056365966797,
+          "iterations_used": 200,
+          "final_error": 0.004381716070002887,
+          "converged": true,
+          "convergence_rate": 7.350146237500973e-08,
+          "success": true
+        }
+      ],
+      "benchmark_name": "Convergence Analysis",
+      "total_duration": 0.05562782287597656,
+      "status": "completed"
+    }
+  ]
+}
