@@ -1,11 +1,11 @@
 {
   "deployment_info": {
-    "timestamp": "2025-08-07 12:07:35 UTC",
-    "total_duration": 0.5795025825500488,
+    "timestamp": "2025-08-13 22:36:04 UTC",
+    "total_duration": 5.9931676387786865,
     "success_rate": 0.75,
     "successful_steps": 3,
     "total_steps": 4,
-    "deployment_id": "54d5121857f9"
+    "deployment_id": "3ae6f51dcdd6"
   },
   "environment": {
     "target_env": "production",
@@ -23,7 +23,7 @@
   "step_results": {
     "Environment Validation": {
       "status": "success",
-      "duration": 0.004312276840209961,
+      "duration": 0.005221366882324219,
       "result": {
         "python_version": {
           "version": "3.12.3",
@@ -31,7 +31,7 @@
           "requirement": "3.9+"
         },
         "disk_space": {
-          "free_gb": 19.88,
+          "free_gb": 11.28,
           "sufficient": true,
           "requirement": "5GB"
         },
@@ -51,7 +51,7 @@
     },
     "Pre-deployment Checks": {
       "status": "success",
-      "duration": 3.600120544433594e-05,
+      "duration": 3.8623809814453125e-05,
       "result": {
         "code_quality": {
           "status": "completed",
@@ -91,7 +91,7 @@
     },
     "Build Artifacts": {
       "status": "success",
-      "duration": 0.0011401176452636719,
+      "duration": 0.0021936893463134766,
       "result": {
         "python_package": {
           "build_dir": "/root/repo/build/package",
@@ -125,7 +125,7 @@
         },
         "release_notes": {
           "version": "0.1.0",
-          "release_date": "2025-08-07",
+          "release_date": "2025-08-13",
           "features": [
             "Complete analog PDE solver implementation",
             "Multi-generation architecture (Simple, Robust, Optimized)",
@@ -145,16 +145,16 @@
     },
     "Security Validation": {
       "status": "failed",
-      "duration": 0.5739231109619141,
+      "duration": 5.985584497451782,
       "error": "Security validation failed"
     }
   },
   "deployment_log": [
     {
-      "timestamp": 1754568454.701992,
+      "timestamp": 1755124558.0438113,
       "step": "Environment Validation",
       "status": "success",
-      "duration": 0.004312276840209961,
+      "duration": 0.005221366882324219,
       "result": {
         "python_version": {
           "version": "3.12.3",
@@ -162,7 +162,7 @@
           "requirement": "3.9+"
         },
         "disk_space": {
-          "free_gb": 19.88,
+          "free_gb": 11.28,
           "sufficient": true,
           "requirement": "5GB"
         },
@@ -181,10 +181,10 @@
       }
     },
     {
-      "timestamp": 1754568454.7020469,
+      "timestamp": 1755124558.0438817,
       "step": "Pre-deployment Checks",
       "status": "success",
-      "duration": 3.600120544433594e-05,
+      "duration": 3.8623809814453125e-05,
       "result": {
         "code_quality": {
           "status": "completed",
@@ -223,10 +223,10 @@
       }
     },
     {
-      "timestamp": 1754568454.703195,
+      "timestamp": 1755124558.0460856,
       "step": "Build Artifacts",
       "status": "success",
-      "duration": 0.0011401176452636719,
+      "duration": 0.0021936893463134766,
       "result": {
         "python_package": {
           "build_dir": "/root/repo/build/package",
@@ -260,7 +260,7 @@
         },
         "release_notes": {
           "version": "0.1.0",
-          "release_date": "2025-08-07",
+          "release_date": "2025-08-13",
           "features": [
             "Complete analog PDE solver implementation",
             "Multi-generation architecture (Simple, Robust, Optimized)",
@@ -279,10 +279,10 @@
       }
     },
     {
-      "timestamp": 1754568455.2771332,
+      "timestamp": 1755124564.031691,
       "step": "Security Validation",
       "status": "failed",
-      "duration": 0.5739231109619141,
+      "duration": 5.985584497451782,
       "error": "Security validation failed"
     }
   ],
