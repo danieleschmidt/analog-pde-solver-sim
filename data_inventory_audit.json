@@ -1,0 +1,70 @@
+{
+  "organization": "Terragon Labs",
+  "export_date": 1755242384.2492912,
+  "data_subjects": [
+    {
+      "subject_id": "user_eu_001",
+      "subject_type": "user",
+      "jurisdiction": "EU",
+      "consent_date": 1755242384.2482421,
+      "consent_purposes": [
+        "monitoring",
+        "computation"
+      ],
+      "retention_period_days": 365
+    },
+    {
+      "subject_id": "user_us_001",
+      "subject_type": "user",
+      "jurisdiction": "US-CA",
+      "consent_date": 1755242384.2483451,
+      "consent_purposes": [
+        "computation"
+      ],
+      "retention_period_days": 730
+    },
+    {
+      "subject_id": "system_monitor",
+      "subject_type": "system",
+      "jurisdiction": "EU",
+      "consent_date": null,
+      "consent_purposes": [],
+      "retention_period_days": 365
+    }
+  ],
+  "processing_records": [
+    {
+      "record_id": "88b1ebc7f699f97e",
+      "subject_id": "user_eu_001",
+      "data_type": "solver_parameters",
+      "classification": "internal",
+      "purpose": "computation",
+      "processing_date": 1755242384.2486362,
+      "retention_until": 1786778384.2486365,
+      "jurisdiction": "EU",
+      "expired": false
+    },
+    {
+      "record_id": "1c7cbf7fd4c3064c",
+      "subject_id": "user_eu_001",
+      "data_type": "performance_metrics",
+      "classification": "confidential",
+      "purpose": "monitoring",
+      "processing_date": 1755242384.2486672,
+      "retention_until": 1786778384.2486672,
+      "jurisdiction": "EU",
+      "expired": false
+    },
+    {
+      "record_id": "af02b5bb798b4461",
+      "subject_id": "system_monitor",
+      "data_type": "system_health",
+      "classification": "internal",
+      "purpose": "monitoring",
+      "processing_date": 1755242384.2488139,
+      "retention_until": 1786778384.248814,
+      "jurisdiction": "EU",
+      "expired": false
+    }
+  ]
+}

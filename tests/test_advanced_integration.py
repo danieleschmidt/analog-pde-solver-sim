@@ -23,7 +23,7 @@ except ImportError as e:
     IMPORT_ERROR = str(e)
 
 
-@pytest.mark.skipif(not IMPORTS_AVAILABLE, reason=f"Imports failed: {IMPORT_ERROR}")
+@pytest.mark.skipif(not IMPORTS_AVAILABLE, reason="Required imports not available")
 class TestRobustSolver:
     """Test the robust analog PDE solver implementation."""
     
@@ -100,7 +100,7 @@ class TestRobustSolver:
         assert health['crossbar_size'] == 128
 
 
-@pytest.mark.skipif(not IMPORTS_AVAILABLE, reason=f"Imports failed: {IMPORT_ERROR}")
+@pytest.mark.skipif(not IMPORTS_AVAILABLE, reason="Required imports not available")
 class TestPerformanceOptimizer:
     """Test performance optimization features."""
     
@@ -158,7 +158,7 @@ class TestPerformanceOptimizer:
         assert len(optimizer.solution_cache) == 0
 
 
-@pytest.mark.skipif(not IMPORTS_AVAILABLE, reason=f"Imports failed: {IMPORT_ERROR}")
+@pytest.mark.skipif(not IMPORTS_AVAILABLE, reason="Required imports not available")
 class TestHealthMonitoring:
     """Test health monitoring system."""
     
@@ -226,7 +226,7 @@ class TestHealthMonitoring:
         assert len(critical_alerts) > 0
 
 
-@pytest.mark.skipif(not IMPORTS_AVAILABLE, reason=f"Imports failed: {IMPORT_ERROR}")  
+@pytest.mark.skipif(not IMPORTS_AVAILABLE, reason="Required imports not available")  
 class TestAutoScaling:
     """Test auto-scaling functionality."""
     
@@ -284,7 +284,7 @@ class TestAutoScaling:
         assert solver.name == "test"
 
 
-@pytest.mark.skipif(not IMPORTS_AVAILABLE, reason=f"Imports failed: {IMPORT_ERROR}")
+@pytest.mark.skipif(not IMPORTS_AVAILABLE, reason="Required imports not available")
 class TestRTLGeneration:
     """Test RTL generation capabilities."""
     
@@ -352,7 +352,7 @@ class TestRTLGeneration:
                     assert file_path.stat().st_size > 0
 
 
-@pytest.mark.skipif(not IMPORTS_AVAILABLE, reason=f"Imports failed: {IMPORT_ERROR}")
+@pytest.mark.skipif(not IMPORTS_AVAILABLE, reason="Required imports not available")
 class TestValidation:
     """Test input validation and error handling."""
     
@@ -394,7 +394,7 @@ class TestValidation:
             validate_conductance_range((1e-9,))  # Wrong length
 
 
-@pytest.mark.skipif(not IMPORTS_AVAILABLE, reason=f"Imports failed: {IMPORT_ERROR}")
+@pytest.mark.skipif(not IMPORTS_AVAILABLE, reason="Required imports not available")
 class TestEndToEndIntegration:
     """End-to-end integration tests combining multiple components."""
     

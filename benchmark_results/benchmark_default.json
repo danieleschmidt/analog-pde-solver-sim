@@ -1,0 +1,111 @@
+{
+  "summary": {
+    "total_problems": 8,
+    "successful_runs": 3,
+    "success_rate": 0.375,
+    "timestamp": "2025-08-15 07:15:59"
+  },
+  "performance_metrics": {
+    "execution_time": {
+      "mean": 0.022494720111107352,
+      "median": 0.023740062666661288,
+      "std": 0.00708777742854172,
+      "min": 0.013258586999995714,
+      "max": 0.03048551066666505
+    },
+    "memory_usage": {
+      "mean": 0.18709309895833331,
+      "peak": 0.33984375
+    },
+    "accuracy": {
+      "mean_error": 0.0,
+      "max_error": 0.0
+    },
+    "energy_efficiency": {
+      "total_energy": Infinity,
+      "average_energy": Infinity
+    }
+  },
+  "problem_breakdown": [
+    {
+      "problem_name": "poisson_2d_sine",
+      "solver_type": "AnalogPDESolver",
+      "execution_time": Infinity,
+      "memory_usage": 0.13736979166666666,
+      "accuracy_error": Infinity,
+      "energy_estimate": Infinity,
+      "convergence_iterations": 0,
+      "timestamp": "2025-08-15 07:15:59"
+    },
+    {
+      "problem_name": "poisson_2d_gaussian",
+      "solver_type": "AnalogPDESolver",
+      "execution_time": 0.013258586999995714,
+      "memory_usage": 0.33984375,
+      "accuracy_error": 0.0,
+      "energy_estimate": 519524.473007832,
+      "convergence_iterations": 65,
+      "timestamp": "2025-08-15 07:15:59"
+    },
+    {
+      "problem_name": "heat_1d_transient",
+      "solver_type": "AnalogPDESolver",
+      "execution_time": Infinity,
+      "memory_usage": 0.169921875,
+      "accuracy_error": Infinity,
+      "energy_estimate": Infinity,
+      "convergence_iterations": 0,
+      "timestamp": "2025-08-15 07:15:59"
+    },
+    {
+      "problem_name": "wave_1d_simple",
+      "solver_type": "AnalogPDESolver",
+      "execution_time": 0.023740062666661288,
+      "memory_usage": 0.33984375,
+      "accuracy_error": 0.0,
+      "energy_estimate": 486576.3244158898,
+      "convergence_iterations": 180,
+      "timestamp": "2025-08-15 07:15:59"
+    },
+    {
+      "problem_name": "navier_stokes_cavity",
+      "solver_type": "AnalogPDESolver",
+      "execution_time": Infinity,
+      "memory_usage": 0.0,
+      "accuracy_error": Infinity,
+      "energy_estimate": Infinity,
+      "convergence_iterations": 0,
+      "timestamp": "2025-08-15 07:15:59"
+    },
+    {
+      "problem_name": "laplace_2d_dirichlet",
+      "solver_type": "AnalogPDESolver",
+      "execution_time": Infinity,
+      "memory_usage": 0.169921875,
+      "accuracy_error": Infinity,
+      "energy_estimate": Infinity,
+      "convergence_iterations": 0,
+      "timestamp": "2025-08-15 07:15:59"
+    },
+    {
+      "problem_name": "poisson_3d_cube",
+      "solver_type": "AnalogPDESolver",
+      "execution_time": Infinity,
+      "memory_usage": 0.0,
+      "accuracy_error": Infinity,
+      "energy_estimate": Infinity,
+      "convergence_iterations": 0,
+      "timestamp": "2025-08-15 07:15:59"
+    },
+    {
+      "problem_name": "diffusion_reaction",
+      "solver_type": "AnalogPDESolver",
+      "execution_time": 0.03048551066666505,
+      "memory_usage": 0.33984375,
+      "accuracy_error": 0.0,
+      "energy_estimate": 1194544.2499626034,
+      "convergence_iterations": 250,
+      "timestamp": "2025-08-15 07:15:59"
+    }
+  ]
+}

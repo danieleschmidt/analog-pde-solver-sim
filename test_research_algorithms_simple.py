@@ -143,7 +143,7 @@ def main():
     print(f"=== RESULTS: {passed}/{len(tests)} tests passed ===")
     
     if passed == len(tests):
-        print("✓ All core components validated successfully\!")
+        print("✓ All core components validated successfully!")
         print("Advanced analog PDE solver algorithms are ready for use.")
         return True
     else:

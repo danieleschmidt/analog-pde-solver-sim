@@ -1,0 +1,12 @@
+[
+  {
+    "timestamp": 1755242205.2760158,
+    "crossbar_health": 100.0,
+    "solver_health": 45.0,
+    "memory_usage_mb": 50.98828125,
+    "error_rate": 0.0,
+    "performance_score": 100.0,
+    "convergence_rate": 8.019264756436361e-08,
+    "device_degradation": 0.0
+  }
+]
