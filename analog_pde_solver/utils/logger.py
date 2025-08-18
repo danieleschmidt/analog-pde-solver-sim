@@ -3,7 +3,7 @@
 import logging
 import sys
 import json
-from datetime import datetime
+from datetime import datetime, UTC
 from typing import Dict, Any, Optional
 import os
 
@@ -14,7 +14,7 @@ class StructuredFormatter(logging.Formatter):
     def format(self, record):
         """Format log record with structured data."""
         log_entry = {
-            'timestamp': datetime.utcfromtimestamp(record.created).isoformat() + 'Z',
+            'timestamp': datetime.fromtimestamp(record.created, UTC).isoformat(),
             'level': record.levelname,
             'logger': record.name,
             'message': record.getMessage(),

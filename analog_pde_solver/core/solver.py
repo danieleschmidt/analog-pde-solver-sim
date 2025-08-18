@@ -83,7 +83,7 @@ class AnalogPDESolver:
         
     def solve(
         self, 
-        pde,
+        pde=None,
         iterations: int = 100,
         convergence_threshold: float = 1e-6
     ) -> np.ndarray:
@@ -170,6 +170,27 @@ class AnalogPDESolver:
                 raise  # Re-raise validation and solver errors as-is
             else:
                 raise RuntimeError(f"Unexpected error during solving: {e}") from e
+    
+    def to_rtl(self, target: str = "xilinx_ultrascale", optimization: str = "area"):
+        """Generate RTL hardware description.
+        
+        Args:
+            target: Target FPGA/ASIC platform
+            optimization: Optimization strategy ('area', 'speed', 'power')
+            
+        Returns:
+            RTL generator object
+        """
+        self.logger.info(f"Generating RTL for {target} with {optimization} optimization")
+        from ..rtl.verilog_generator import VerilogGenerator, RTLConfig
+        
+        config = RTLConfig(
+            target_platform=target,
+            optimization_strategy=optimization,
+            crossbar_size=self.crossbar_size
+        )
+        
+        return VerilogGenerator(config)
     
     def _create_laplacian_matrix(self, size: int) -> np.ndarray:
         """Create finite difference Laplacian matrix."""
