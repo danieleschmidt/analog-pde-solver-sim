@@ -1,8 +1,11 @@
 """Robust analog PDE solver with comprehensive error handling."""
 
 import numpy as np
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List, Tuple
 import logging
+import time
+import psutil
+import threading
 from .crossbar import AnalogCrossbarArray
 from ..utils.validation import (
     validate_crossbar_size, validate_conductance_range,
@@ -53,6 +56,20 @@ class RobustAnalogPDESolver:
         self.last_solution = None
         self.convergence_history = []
         self.performance_stats = {}
+        
+        # Advanced robustness features
+        self.circuit_breaker = CircuitBreaker()
+        self.memory_monitor = MemoryMonitor()
+        self.security_monitor = SecurityMonitor()
+        self.auto_recovery = AutoRecoverySystem()
+        
+        # Health monitoring
+        self.health_status = {
+            'solver_healthy': True,
+            'memory_healthy': True,
+            'crossbar_healthy': True,
+            'last_health_check': time.time()
+        }
         
     def map_pde_to_crossbar(self, pde) -> Dict[str, Any]:
         """Map PDE discretization matrix to crossbar conductances."""
@@ -340,10 +357,138 @@ class RobustAnalogPDESolver:
         
         # Check crossbar integrity
         try:
-            test_vector = np.ones(min(10, self.crossbar_size))
+            test_vector = np.ones(self.crossbar_size)
             result = self.crossbar.compute_vmm(test_vector)
             health["crossbar_check"] = "passed" if np.isfinite(result).all() else "failed"
         except Exception as e:
             health["crossbar_check"] = f"failed: {e}"
         
         return health
+
+
+class CircuitBreaker:
+    """Circuit breaker pattern for fault tolerance."""
+    
+    def __init__(self, failure_threshold: int = 5, recovery_timeout: int = 60):
+        self.failure_threshold = failure_threshold
+        self.recovery_timeout = recovery_timeout
+        self.failure_count = 0
+        self.last_failure_time = 0
+        self.state = "CLOSED"  # CLOSED, OPEN, HALF_OPEN
+        
+    def call(self, func, *args, **kwargs):
+        """Execute function with circuit breaker protection."""
+        if self.state == "OPEN":
+            if time.time() - self.last_failure_time > self.recovery_timeout:
+                self.state = "HALF_OPEN"
+            else:
+                raise RuntimeError("Circuit breaker is OPEN")
+        
+        try:
+            result = func(*args, **kwargs)
+            if self.state == "HALF_OPEN":
+                self.state = "CLOSED"
+                self.failure_count = 0
+            return result
+        except Exception as e:
+            self.failure_count += 1
+            self.last_failure_time = time.time()
+            
+            if self.failure_count >= self.failure_threshold:
+                self.state = "OPEN"
+            
+            raise e
+
+
+class MemoryMonitor:
+    """Monitor memory usage and prevent OOM conditions."""
+    
+    def __init__(self, memory_threshold: float = 0.85):
+        self.memory_threshold = memory_threshold
+        
+    def check_memory(self) -> Dict[str, Any]:
+        """Check current memory usage."""
+        try:
+            memory = psutil.virtual_memory()
+            return {
+                "total": memory.total,
+                "available": memory.available,
+                "percent": memory.percent,
+                "warning": memory.percent > self.memory_threshold * 100
+            }
+        except Exception:
+            return {"warning": True, "error": "Failed to get memory info"}
+    
+    def ensure_memory_available(self, required_bytes: int):
+        """Ensure sufficient memory is available."""
+        memory_info = self.check_memory()
+        if memory_info.get("warning", False):
+            raise RuntimeError("Insufficient memory available")
+
+
+class SecurityMonitor:
+    """Monitor for security-related issues."""
+    
+    def __init__(self):
+        self.suspicious_patterns = [
+            r"eval\s*\(",
+            r"exec\s*\(",
+            r"__import__",
+            r"open\s*\(",
+            r"file\s*\(",
+        ]
+        
+    def validate_input(self, data: Any) -> bool:
+        """Validate input data for security issues."""
+        if isinstance(data, str):
+            import re
+            for pattern in self.suspicious_patterns:
+                if re.search(pattern, data, re.IGNORECASE):
+                    raise SecurityError(f"Suspicious pattern detected: {pattern}")
+        return True
+
+
+class SecurityError(Exception):
+    """Security-related error."""
+    pass
+
+
+class AutoRecoverySystem:
+    """Automatic recovery from failures."""
+    
+    def __init__(self):
+        self.recovery_strategies = {
+            "memory_error": self._recover_from_memory_error,
+            "convergence_failure": self._recover_from_convergence_failure,
+            "numerical_instability": self._recover_from_numerical_error
+        }
+        
+    def attempt_recovery(self, error_type: str, context: Dict[str, Any]):
+        """Attempt to recover from specified error type."""
+        if error_type in self.recovery_strategies:
+            return self.recovery_strategies[error_type](context)
+        return False
+    
+    def _recover_from_memory_error(self, context: Dict[str, Any]) -> bool:
+        """Recover from memory-related errors."""
+        # Reduce problem size or precision
+        if "crossbar_size" in context:
+            context["crossbar_size"] = min(64, context["crossbar_size"] // 2)
+            return True
+        return False
+    
+    def _recover_from_convergence_failure(self, context: Dict[str, Any]) -> bool:
+        """Recover from convergence failures."""
+        # Adjust convergence parameters
+        if "threshold" in context:
+            context["threshold"] *= 10  # Relax threshold
+        if "damping" in context:
+            context["damping"] *= 0.5  # Reduce damping
+        return True
+    
+    def _recover_from_numerical_error(self, context: Dict[str, Any]) -> bool:
+        """Recover from numerical instability."""
+        # Switch to more stable algorithm
+        if "solver_type" in context:
+            context["solver_type"] = "stable"
+        return True

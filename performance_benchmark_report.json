@@ -1,18 +1,18 @@
 {
-  "timestamp": "2025-08-17 21:19:01",
+  "timestamp": "2025-08-20 03:44:59",
   "system_info": {
     "python_version": "3.12.3 (main, Jun 18 2025, 17:59:45) [GCC 13.3.0]",
     "platform": "linux",
     "cpu_count": 2,
     "memory_gb": 3.8496856689453125,
     "cpu_freq_mhz": 2000.176,
-    "numpy_version": "2.3.2"
+    "numpy_version": "1.26.4"
   },
   "summary": {
     "total_benchmarks": 6,
     "successful_benchmarks": 6,
     "failed_benchmarks": 0,
-    "total_benchmark_time": 0.17932987213134766,
+    "total_benchmark_time": 0.19470000267028809,
     "success_rate": 1.0
   },
   "performance_summary": {
@@ -26,25 +26,25 @@
       "test_cases": [
         {
           "size": 16,
-          "solve_time": 0.015705585479736328,
-          "solution_norm": 27.20487598230337,
+          "solve_time": 0.004899263381958008,
+          "solution_norm": 27.24248607430946,
           "success": true
         },
         {
           "size": 32,
-          "solve_time": 0.004327535629272461,
-          "solution_norm": 39.08468893977669,
+          "solve_time": 0.004660129547119141,
+          "solution_norm": 39.149564245295764,
           "success": true
         },
         {
           "size": 64,
-          "solve_time": 0.005175352096557617,
-          "solution_norm": 55.76283223296242,
+          "solve_time": 0.005525350570678711,
+          "solution_norm": 55.73173330832208,
           "success": true
         }
       ],
       "benchmark_name": "Basic Solver Performance",
-      "total_duration": 0.025910615921020508,
+      "total_duration": 0.015738248825073242,
       "status": "completed"
     },
     {
@@ -52,34 +52,34 @@
       "test_cases": [
         {
           "size": 16,
-          "solve_time": 0.006201982498168945,
+          "solve_time": 0.011172771453857422,
           "solution_norm": 0.28825760206162176,
           "iterations": 100,
-          "convergence_rate": 7.099339938518323e-08,
-          "crossbar_health": "failed: shapes (16,16) and (10,) not aligned: 16 (dim 1) != 10 (dim 0)",
+          "convergence_rate": 7.099339977813432e-08,
+          "crossbar_health": "passed",
           "success": true
         },
         {
           "size": 32,
-          "solve_time": 0.006742000579833984,
+          "solve_time": 0.011344194412231445,
           "solution_norm": 0.4276186248151229,
           "iterations": 100,
-          "convergence_rate": 7.430795468924173e-08,
-          "crossbar_health": "failed: shapes (32,32) and (10,) not aligned: 32 (dim 1) != 10 (dim 0)",
+          "convergence_rate": 7.430795540862017e-08,
+          "crossbar_health": "passed",
           "success": true
         },
         {
           "size": 64,
-          "solve_time": 0.007869958877563477,
+          "solve_time": 0.009178400039672852,
           "solution_norm": 0.6112423664700773,
           "iterations": 100,
-          "convergence_rate": 7.671039827666049e-08,
-          "crossbar_health": "failed: shapes (64,64) and (10,) not aligned: 64 (dim 1) != 10 (dim 0)",
+          "convergence_rate": 7.671039912462244e-08,
+          "crossbar_health": "passed",
           "success": true
         }
       ],
       "benchmark_name": "Robust Solver Performance",
-      "total_duration": 0.026431560516357422,
+      "total_duration": 0.0344998836517334,
       "status": "completed"
     },
     {
@@ -88,46 +88,46 @@
         {
           "size": 8,
           "complexity": 64,
-          "mean_time": 0.0019411245981852214,
-          "std_time": 5.76152472084582e-05,
-          "min_time": 0.0018663406372070312,
-          "max_time": 0.00200653076171875
+          "mean_time": 0.0029611587524414062,
+          "std_time": 0.0005001751316929204,
+          "min_time": 0.0025730133056640625,
+          "max_time": 0.0036673545837402344
         },
         {
           "size": 16,
           "complexity": 256,
-          "mean_time": 0.0019205411275227864,
-          "std_time": 2.6595043616238068e-05,
-          "min_time": 0.0019006729125976562,
-          "max_time": 0.001958131790161133
+          "mean_time": 0.0028104782104492188,
+          "std_time": 6.325690181543607e-05,
+          "min_time": 0.0027534961700439453,
+          "max_time": 0.002898693084716797
         },
         {
           "size": 32,
           "complexity": 1024,
-          "mean_time": 0.0023758411407470703,
-          "std_time": 3.0358840449021453e-05,
-          "min_time": 0.0023338794708251953,
-          "max_time": 0.0024046897888183594
+          "mean_time": 0.0032271544138590493,
+          "std_time": 0.00038668016232170667,
+          "min_time": 0.0028891563415527344,
+          "max_time": 0.003768444061279297
         },
         {
           "size": 64,
           "complexity": 4096,
-          "mean_time": 0.0026335716247558594,
-          "std_time": 3.3017314956134394e-05,
-          "min_time": 0.002592325210571289,
-          "max_time": 0.0026731491088867188
+          "mean_time": 0.0034165382385253906,
+          "std_time": 0.0001176464634894752,
+          "min_time": 0.003315448760986328,
+          "max_time": 0.003581523895263672
         },
         {
           "size": 128,
           "complexity": 16384,
-          "mean_time": 0.003734429677327474,
-          "std_time": 0.000156553505435115,
-          "min_time": 0.0035157203674316406,
-          "max_time": 0.003873586654663086
+          "mean_time": 0.005091428756713867,
+          "std_time": 0.0004416761074051475,
+          "min_time": 0.004606485366821289,
+          "max_time": 0.005674839019775391
         }
       ],
       "benchmark_name": "Scaling Performance",
-      "total_duration": 0.03953289985656738,
+      "total_duration": 0.05431365966796875,
       "status": "completed"
     },
     {
@@ -139,8 +139,8 @@
             16
           ],
           "timesteps": 5,
-          "total_time": 0.010940074920654297,
-          "time_per_step": 0.0021880149841308595,
+          "total_time": 0.012198448181152344,
+          "time_per_step": 0.0024396896362304686,
           "avg_power_mw": 7.0,
           "energy_per_iter_nj": 70000.0,
           "success": true
@@ -151,15 +151,15 @@
             32
           ],
           "timesteps": 5,
-          "total_time": 0.014569997787475586,
-          "time_per_step": 0.0029139995574951174,
+          "total_time": 0.013113260269165039,
+          "time_per_step": 0.002622652053833008,
           "avg_power_mw": 7.0,
           "energy_per_iter_nj": 70000.0,
           "success": true
         }
       ],
       "benchmark_name": "Navier-Stokes Performance",
-      "total_duration": 0.02618694305419922,
+      "total_duration": 0.025849342346191406,
       "status": "completed"
     },
     {
@@ -167,34 +167,34 @@
       "measurements": [
         {
           "size": 32,
-          "baseline_memory_mb": 39.80859375,
-          "memory_before_mb": 39.80859375,
-          "memory_after_creation_mb": 39.80859375,
-          "memory_after_solve_mb": 39.80859375,
+          "baseline_memory_mb": 37.69921875,
+          "memory_before_mb": 37.69921875,
+          "memory_after_creation_mb": 37.69921875,
+          "memory_after_solve_mb": 37.69921875,
           "memory_increase_mb": 0.0,
           "solve_success": true
         },
         {
           "size": 64,
-          "baseline_memory_mb": 39.80859375,
-          "memory_before_mb": 39.80859375,
-          "memory_after_creation_mb": 39.80859375,
-          "memory_after_solve_mb": 39.80859375,
+          "baseline_memory_mb": 37.69921875,
+          "memory_before_mb": 37.69921875,
+          "memory_after_creation_mb": 37.69921875,
+          "memory_after_solve_mb": 37.69921875,
           "memory_increase_mb": 0.0,
           "solve_success": true
         },
         {
           "size": 128,
-          "baseline_memory_mb": 39.80859375,
-          "memory_before_mb": 39.80859375,
-          "memory_after_creation_mb": 39.80859375,
-          "memory_after_solve_mb": 40.578125,
+          "baseline_memory_mb": 37.69921875,
+          "memory_before_mb": 37.69921875,
+          "memory_after_creation_mb": 37.69921875,
+          "memory_after_solve_mb": 38.46875,
           "memory_increase_mb": 0.76953125,
           "solve_success": true
         }
       ],
       "benchmark_name": "Memory Usage",
-      "total_duration": 0.01326298713684082,
+      "total_duration": 0.014177560806274414,
       "status": "completed"
     },
     {
@@ -202,43 +202,43 @@
       "test_cases": [
         {
           "threshold": 0.001,
-          "solve_time": 0.011654853820800781,
+          "solve_time": 0.012192487716674805,
           "iterations_used": 200,
-          "final_error": 0.004381716070002888,
+          "final_error": 0.004381716070002887,
           "converged": true,
-          "convergence_rate": 7.350146170623934e-08,
+          "convergence_rate": 7.350146237500973e-08,
           "success": true
         },
         {
           "threshold": 0.0001,
-          "solve_time": 0.011584043502807617,
+          "solve_time": 0.01286458969116211,
           "iterations_used": 200,
-          "final_error": 0.004381716070002888,
+          "final_error": 0.004381716070002887,
           "converged": true,
-          "convergence_rate": 7.350146170623934e-08,
+          "convergence_rate": 7.350146237500973e-08,
           "success": true
         },
         {
           "threshold": 1e-05,
-          "solve_time": 0.011601448059082031,
+          "solve_time": 0.011974573135375977,
           "iterations_used": 200,
-          "final_error": 0.004381716070002888,
+          "final_error": 0.004381716070002887,
           "converged": true,
-          "convergence_rate": 7.350146170623934e-08,
+          "convergence_rate": 7.350146237500973e-08,
           "success": true
         },
         {
           "threshold": 1e-06,
-          "solve_time": 0.011940956115722656,
+          "solve_time": 0.011871576309204102,
           "iterations_used": 200,
-          "final_error": 0.004381716070002888,
+          "final_error": 0.004381716070002887,
           "converged": true,
-          "convergence_rate": 7.350146170623934e-08,
+          "convergence_rate": 7.350146237500973e-08,
           "success": true
         }
       ],
       "benchmark_name": "Convergence Analysis",
-      "total_duration": 0.048004865646362305,
+      "total_duration": 0.050121307373046875,
       "status": "completed"
     }
   ]

@@ -28,6 +28,17 @@ except ImportError:
     # Graceful degradation for development
     logging.warning("Core modules not available - running in development mode")
 
+# Tensor operations with fallback
+try:
+    import torch
+    import torch.nn as nn
+    import torch.optim as optim
+    _HAS_TORCH = True
+except ImportError:
+    from ..utils.tensor_ops import torch, tensor_ops
+    _HAS_TORCH = False
+    logging.warning("PyTorch not available - using lightweight tensor operations")
+
 
 class BreakthroughAlgorithmType(Enum):
     """Types of breakthrough algorithms available."""
