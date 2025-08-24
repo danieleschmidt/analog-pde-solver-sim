@@ -18,12 +18,43 @@ except ImportError:
 
 from .core.solver import AnalogPDESolver
 from .core.equations import PoissonEquation, NavierStokesEquation, HeatEquation, WaveEquation
-from .navier_stokes import NavierStokesAnalog
-from .core.solver_robust import RobustAnalogPDESolver
-from .optimization.performance_optimizer import PerformanceOptimizer, OptimizationConfig
-from .optimization.auto_scaler import AutoScaler, ScalingPolicy
-from .monitoring.health_monitor import SystemHealthMonitor
-from .rtl.verilog_generator import VerilogGenerator, RTLConfig
+
+# Optional imports with graceful fallback
+try:
+    from .navier_stokes import NavierStokesAnalog
+    _HAS_NAVIER_STOKES = True
+except ImportError:
+    _HAS_NAVIER_STOKES = False
+    NavierStokesAnalog = None
+
+try:
+    from .core.solver_robust import RobustAnalogPDESolver
+    _HAS_ROBUST_SOLVER = True
+except ImportError:
+    _HAS_ROBUST_SOLVER = False
+    RobustAnalogPDESolver = None
+
+try:
+    from .optimization.performance_optimizer import PerformanceOptimizer, OptimizationConfig
+    from .optimization.auto_scaler import AutoScaler, ScalingPolicy
+    _HAS_OPTIMIZATION = True
+except ImportError:
+    _HAS_OPTIMIZATION = False
+    PerformanceOptimizer = OptimizationConfig = AutoScaler = ScalingPolicy = None
+
+try:
+    from .monitoring.health_monitor import SystemHealthMonitor
+    _HAS_MONITORING = True
+except ImportError:
+    _HAS_MONITORING = False
+    SystemHealthMonitor = None
+
+try:
+    from .rtl.verilog_generator import VerilogGenerator, RTLConfig
+    _HAS_RTL = True
+except ImportError:
+    _HAS_RTL = False
+    VerilogGenerator = RTLConfig = None
 
 # GPU acceleration (optional)
 try:
@@ -41,18 +72,24 @@ __all__ = [
     "NavierStokesEquation",
     "HeatEquation",
     "WaveEquation",
-    "NavierStokesAnalog",
-    "RobustAnalogPDESolver",
-    "PerformanceOptimizer",
-    "OptimizationConfig", 
-    "AutoScaler",
-    "ScalingPolicy",
-    "SystemHealthMonitor",
-    "VerilogGenerator",
-    "RTLConfig",
 ]
 
-# Add GPU acceleration to exports if available
+# Add optional components to exports if available
+if _HAS_NAVIER_STOKES and NavierStokesAnalog:
+    __all__.append("NavierStokesAnalog")
+
+if _HAS_ROBUST_SOLVER and RobustAnalogPDESolver:
+    __all__.append("RobustAnalogPDESolver")
+
+if _HAS_OPTIMIZATION and PerformanceOptimizer:
+    __all__.extend(["PerformanceOptimizer", "OptimizationConfig", "AutoScaler", "ScalingPolicy"])
+
+if _HAS_MONITORING and SystemHealthMonitor:
+    __all__.append("SystemHealthMonitor")
+
+if _HAS_RTL and VerilogGenerator:
+    __all__.extend(["VerilogGenerator", "RTLConfig"])
+
 if _HAS_GPU_ACCELERATION:
     __all__.extend([
         "GPUAcceleratedSolver",
