@@ -21,65 +21,130 @@ All algorithms are validated against rigorous baselines with comprehensive
 performance analysis and are ready for academic publication and peer review.
 """
 
-from .stochastic_analog_computing import (
-    StochasticPDESolver,
-    StochasticConfig, 
-    AnalogNoiseModel,
-    UncertaintyQuantificationFramework
-)
+# Core breakthrough algorithms - import with fallbacks for dependencies
+try:
+    from .spatio_temporal_tensor_fusion import (
+        SpatioTemporalTensorAnalogSolver,
+        TensorFusionConfig,
+        TensorDecompositionType
+    )
+    TENSOR_FUSION_AVAILABLE = True
+except ImportError as e:
+    print(f"Tensor fusion import warning: {e}")
+    TENSOR_FUSION_AVAILABLE = False
 
-from .quantum_error_corrected_analog import (
-    QuantumErrorCorrectedAnalogComputer,
-    QuantumErrorCorrectionConfig,
-    ErrorCorrectionCode,
-    SteaneCode,
-    QuantumState
-)
+try:
+    from .quantum_tensor_analog_hybrid import (
+        QuantumTensorAnalogSolver,
+        QuantumTensorAnalogConfig,
+        QuantumEncodingType
+    )
+    QUANTUM_HYBRID_AVAILABLE = True
+except ImportError as e:
+    print(f"Quantum hybrid import warning: {e}")
+    QUANTUM_HYBRID_AVAILABLE = False
 
-from .nonlinear_pde_analog_solvers import (
-    NonlinearPDEAnalogSolver,
-    NonlinearSolverConfig,
-    NonlinearPDEType,
-    AnalogJacobianComputer,
-    ShockCapturingScheme
-)
+# Optional advanced modules with graceful fallbacks
+try:
+    from .stochastic_analog_computing import (
+        StochasticPDESolver,
+        StochasticConfig, 
+        AnalogNoiseModel,
+        UncertaintyQuantificationFramework
+    )
+    STOCHASTIC_AVAILABLE = True
+except ImportError:
+    STOCHASTIC_AVAILABLE = False
 
-from .experimental_validation_framework import (
-    ExperimentalValidationFramework,
-    ExperimentalConfig,
-    ExperimentResult,
-    StatisticalAnalyzer,
-    PerformanceProfiler
-)
+try:
+    from .quantum_error_corrected_analog import (
+        QuantumErrorCorrectedAnalogComputer,
+        QuantumErrorCorrectionConfig,
+        ErrorCorrectionCode,
+        SteaneCode,
+        QuantumState
+    )
+    QUANTUM_ERROR_CORRECTION_AVAILABLE = True
+except ImportError:
+    QUANTUM_ERROR_CORRECTION_AVAILABLE = False
 
-__all__ = [
-    # Stochastic Analog Computing
-    "StochasticPDESolver",
-    "StochasticConfig", 
-    "AnalogNoiseModel",
-    "UncertaintyQuantificationFramework",
-    
-    # Quantum Error-Corrected Analog
-    "QuantumErrorCorrectedAnalogComputer",
-    "QuantumErrorCorrectionConfig",
-    "ErrorCorrectionCode",
-    "SteaneCode",
-    "QuantumState",
-    
-    # Nonlinear PDE Solvers
-    "NonlinearPDEAnalogSolver",
-    "NonlinearSolverConfig", 
-    "NonlinearPDEType",
-    "AnalogJacobianComputer",
-    "ShockCapturingScheme",
-    
-    # Experimental Validation
-    "ExperimentalValidationFramework",
-    "ExperimentalConfig",
-    "ExperimentResult", 
-    "StatisticalAnalyzer",
-    "PerformanceProfiler"
-]
+try:
+    from .nonlinear_pde_analog_solvers import (
+        NonlinearPDEAnalogSolver,
+        NonlinearSolverConfig,
+        NonlinearPDEType,
+        AnalogJacobianComputer,
+        ShockCapturingScheme
+    )
+    NONLINEAR_AVAILABLE = True
+except ImportError:
+    NONLINEAR_AVAILABLE = False
+
+try:
+    from .experimental_validation_framework import (
+        ExperimentalValidationFramework,
+        ExperimentalConfig,
+        ExperimentResult,
+        StatisticalAnalyzer,
+        PerformanceProfiler
+    )
+    EXPERIMENTAL_VALIDATION_AVAILABLE = True
+except ImportError:
+    EXPERIMENTAL_VALIDATION_AVAILABLE = False
+
+# Build __all__ dynamically based on available modules
+__all__ = []
+
+# Core breakthrough algorithms
+if TENSOR_FUSION_AVAILABLE:
+    __all__.extend([
+        "SpatioTemporalTensorAnalogSolver",
+        "TensorFusionConfig",
+        "TensorDecompositionType"
+    ])
+
+if QUANTUM_HYBRID_AVAILABLE:
+    __all__.extend([
+        "QuantumTensorAnalogSolver",
+        "QuantumTensorAnalogConfig",
+        "QuantumEncodingType"
+    ])
+
+# Optional advanced modules
+if STOCHASTIC_AVAILABLE:
+    __all__.extend([
+        "StochasticPDESolver",
+        "StochasticConfig", 
+        "AnalogNoiseModel",
+        "UncertaintyQuantificationFramework"
+    ])
+
+if QUANTUM_ERROR_CORRECTION_AVAILABLE:
+    __all__.extend([
+        "QuantumErrorCorrectedAnalogComputer",
+        "QuantumErrorCorrectionConfig",
+        "ErrorCorrectionCode",
+        "SteaneCode",
+        "QuantumState"
+    ])
+
+if NONLINEAR_AVAILABLE:
+    __all__.extend([
+        "NonlinearPDEAnalogSolver",
+        "NonlinearSolverConfig", 
+        "NonlinearPDEType",
+        "AnalogJacobianComputer",
+        "ShockCapturingScheme"
+    ])
+
+if EXPERIMENTAL_VALIDATION_AVAILABLE:
+    __all__.extend([
+        "ExperimentalValidationFramework",
+        "ExperimentalConfig",
+        "ExperimentResult", 
+        "StatisticalAnalyzer",
+        "PerformanceProfiler"
+    ])
 
 # Research metadata
 __version__ = "1.0.0"
