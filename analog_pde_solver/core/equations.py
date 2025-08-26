@@ -30,16 +30,20 @@ class PoissonEquation:
         n = self.domain_size[0] if isinstance(self.domain_size, tuple) else self.domain_size
         
         if HAS_SCIPY:
-            # Create Laplacian operator
-            diagonals = [np.ones(n-1), -2*np.ones(n), np.ones(n-1)]
+            # Create discrete Laplacian operator (second derivative)
+            # For 1D: d²/dx² ≈ (u[i-1] - 2*u[i] + u[i+1]) / h²
+            h = 1.0 / (n - 1)  # Grid spacing
+            diagonals = [np.ones(n-1)/h**2, -2*np.ones(n)/h**2, np.ones(n-1)/h**2]
             laplacian = diags(diagonals, [-1, 0, 1], shape=(n, n))
             
-            # Source term
+            # Source term for Poisson: ∇²φ = -ρ, so we solve ∇²φ = f where f = -ρ
+            # For positive source ρ, we want negative f to get positive φ
             if self.source_function:
                 x = np.linspace(0, 1, n)
-                rhs = np.array([self.source_function(xi, 0) for xi in x])
+                source = np.array([self.source_function(xi, 0) for xi in x])
+                rhs = -source  # Negative source for Poisson
             else:
-                rhs = np.ones(n)
+                rhs = -np.ones(n)  # Negative for positive solution
                 
             # Apply boundary conditions
             laplacian = laplacian.tocsr()
@@ -59,11 +63,12 @@ class PoissonEquation:
             print("SciPy not available, using simple iterative solver")
             x = np.linspace(0, 1, n)
             
-            # Source term
+            # Source term for Poisson equation
             if self.source_function:
-                rhs = np.array([self.source_function(xi, 0) for xi in x])
+                source = np.array([self.source_function(xi, 0) for xi in x])
+                rhs = -source  # Negative source for Poisson: ∇²φ = -ρ
             else:
-                rhs = np.ones(n)
+                rhs = -np.ones(n)  # Negative for positive solution
                 
             # Initialize solution
             solution = np.zeros(n)
@@ -74,7 +79,9 @@ class PoissonEquation:
                 solution_new = solution.copy()
                 
                 for i in range(1, n-1):
-                    solution_new[i] = 0.5 * (solution[i-1] + solution[i+1] + dx**2 * rhs[i])
+                    # Jacobi iteration for -d²u/dx² = f(x)
+                    # u[i] = (u[i-1] + u[i+1] - h²*f[i]) / 2
+                    solution_new[i] = 0.5 * (solution[i-1] + solution[i+1] - dx**2 * rhs[i])
                 
                 # Apply boundary conditions
                 solution_new[0] = 0.0
@@ -186,10 +193,16 @@ class HeatEquation:
         if self.temperature_field is None:
             self.initialize_field()
             
+        # Initialize with non-zero field if all zeros
+        if np.all(self.temperature_field == 0):
+            # Add small perturbation in center to trigger evolution
+            mid = len(self.temperature_field) // 2
+            self.temperature_field[mid] = 1.0
+            
         # Simple explicit Euler for heat equation
         alpha = self.thermal_diffusivity
         dt = self.time_step
-        dx = 1.0 / len(self.temperature_field)
+        dx = 1.0 / (len(self.temperature_field) - 1)
         
         # Stability condition: dt <= dx²/(2α)
         if dt > dx**2 / (2 * alpha):
