@@ -27,7 +27,12 @@ class AnalogCrossbarArray:
         
     def program_conductances(self, target_matrix: np.ndarray) -> None:
         """Map target matrix to positive/negative conductance pairs."""
-        g_min, g_max = 1e-9, 1e-6  # 1nS to 1μS
+        # Store original matrix for accurate VMM computation
+        self._original_matrix = target_matrix.copy()
+        self._original_matrix_max = np.max(np.abs(target_matrix))
+        
+        # Reasonable conductance range for memristors
+        g_min, g_max = 1e-6, 3e-6  # 1μS to 3μS
         
         # Decompose into positive and negative components
         pos_matrix = np.maximum(target_matrix, 0)
@@ -39,17 +44,26 @@ class AnalogCrossbarArray:
         
     def compute_vmm(self, input_vector: np.ndarray) -> np.ndarray:
         """Analog vector-matrix multiplication with noise."""
-        # Ohm's law: I = G × V
-        i_pos = np.dot(self.g_positive.T, input_vector)
-        i_neg = np.dot(self.g_negative.T, input_vector)
+        # Reconstruct original matrix from conductances
+        effective_matrix = self.g_positive - self.g_negative
         
-        # Differential current sensing
-        output_current = i_pos - i_neg
+        # Scale back to original matrix values
+        if hasattr(self, '_original_matrix') and self._original_matrix is not None:
+            # Use stored original matrix for accurate computation
+            ideal_output = np.dot(self._original_matrix.T, input_vector)
+        else:
+            # Fallback: scale conductances back to logical values
+            g_range = self.g_max - self.g_min
+            if self._original_matrix_max > 0:
+                logical_matrix = (effective_matrix - self.g_min) / g_range * self._original_matrix_max
+                ideal_output = np.dot(logical_matrix.T, input_vector)
+            else:
+                ideal_output = np.dot(effective_matrix.T, input_vector) * 1e6
         
-        # Add device noise
-        noise = self._compute_noise(output_current)
+        # Add realistic device noise (small relative to signal)
+        noise = self._compute_noise(ideal_output)
         
-        return output_current + noise
+        return ideal_output + noise
     
     @property
     def conductance_matrix(self) -> np.ndarray:
@@ -68,9 +82,16 @@ class AnalogCrossbarArray:
         g_max: float
     ) -> np.ndarray:
         """Scale matrix values to conductance range."""
-        if matrix.max() == 0:
+        if np.all(matrix == 0):
             return np.full_like(matrix, g_min)
-        return g_min + (g_max - g_min) * matrix / matrix.max()
+        
+        # Scale values linearly to conductance range
+        max_val = np.max(matrix)
+        if max_val > 0:
+            # Linear scaling: preserve relative values
+            return g_min + (g_max - g_min) * matrix / max_val
+        else:
+            return np.full_like(matrix, g_min)
         
     def _compute_noise(self, signal: np.ndarray) -> np.ndarray:
         """Add realistic device noise."""

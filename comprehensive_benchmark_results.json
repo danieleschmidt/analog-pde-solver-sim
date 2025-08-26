@@ -1,0 +1,294 @@
+{
+  "benchmark_info": {
+    "timestamp": "2025-08-26 21:22:12",
+    "python_version": "3.12.3",
+    "test_cases": []
+  },
+  "performance_results": {
+    "Poisson": {
+      "Basic-32": {
+        "solve_time_seconds": 0.0052912235260009766,
+        "solution_norm": 1.2188857508980998e+28,
+        "crossbar_size": 32,
+        "optimizations_enabled": false,
+        "iterations": 30,
+        "performance_stats": {}
+      },
+      "Optimized-32": {
+        "solve_time_seconds": 0.005104780197143555,
+        "solution_norm": 6.329006032434064e+27,
+        "crossbar_size": 32,
+        "optimizations_enabled": true,
+        "iterations": 30,
+        "performance_stats": {
+          "cache": {
+            "hit_count": 0,
+            "miss_count": 2,
+            "hit_rate": 0.0,
+            "eviction_count": 0,
+            "entries": 2,
+            "memory_usage_mb": 0.0013427734375,
+            "memory_usage_percent": 0.00026226043701171875
+          },
+          "auto_scaling": {
+            "error": "No metrics available"
+          }
+        }
+      },
+      "Basic-64": {
+        "solve_time_seconds": 0.005534648895263672,
+        "solution_norm": 5.627218501223162e+47,
+        "crossbar_size": 64,
+        "optimizations_enabled": false,
+        "iterations": 30,
+        "performance_stats": {}
+      },
+      "Optimized-64": {
+        "solve_time_seconds": 0.005569934844970703,
+        "solution_norm": 6.438675693248014e+47,
+        "crossbar_size": 64,
+        "optimizations_enabled": true,
+        "iterations": 30,
+        "performance_stats": {
+          "cache": {
+            "hit_count": 0,
+            "miss_count": 4,
+            "hit_rate": 0.0,
+            "eviction_count": 0,
+            "entries": 4,
+            "memory_usage_mb": 0.002685546875,
+            "memory_usage_percent": 0.0005245208740234375
+          },
+          "auto_scaling": {
+            "error": "No metrics available"
+          }
+        }
+      },
+      "Basic-128": {
+        "solve_time_seconds": 0.009810447692871094,
+        "solution_norm": 2.5205364568272946e+66,
+        "crossbar_size": 128,
+        "optimizations_enabled": false,
+        "iterations": 30,
+        "performance_stats": {}
+      },
+      "Optimized-128": {
+        "solve_time_seconds": 0.00917506217956543,
+        "solution_norm": 2.2944611309165208e+66,
+        "crossbar_size": 128,
+        "optimizations_enabled": true,
+        "iterations": 30,
+        "performance_stats": {
+          "cache": {
+            "hit_count": 0,
+            "miss_count": 6,
+            "hit_rate": 0.0,
+            "eviction_count": 0,
+            "entries": 6,
+            "memory_usage_mb": 0.0040283203125,
+            "memory_usage_percent": 0.0007867813110351562
+          },
+          "auto_scaling": {
+            "error": "No metrics available"
+          }
+        }
+      }
+    },
+    "Heat": {
+      "Basic-32": {
+        "solve_time_seconds": 0.0027379989624023438,
+        "solution_norm": 4.42480267395482e+49,
+        "crossbar_size": 32,
+        "optimizations_enabled": false,
+        "iterations": 20,
+        "performance_stats": {}
+      },
+      "Optimized-32": {
+        "solve_time_seconds": 0.0033385753631591797,
+        "solution_norm": 7.971594986316333e+49,
+        "crossbar_size": 32,
+        "optimizations_enabled": true,
+        "iterations": 20,
+        "performance_stats": {
+          "cache": {
+            "hit_count": 0,
+            "miss_count": 8,
+            "hit_rate": 0.0,
+            "eviction_count": 0,
+            "entries": 8,
+            "memory_usage_mb": 0.0053653717041015625,
+            "memory_usage_percent": 0.0010479241609573364
+          },
+          "auto_scaling": {
+            "error": "No metrics available"
+          }
+        }
+      },
+      "Basic-64": {
+        "solve_time_seconds": 0.0033342838287353516,
+        "solution_norm": 3.430891188562649e+74,
+        "crossbar_size": 64,
+        "optimizations_enabled": false,
+        "iterations": 20,
+        "performance_stats": {}
+      },
+      "Optimized-64": {
+        "solve_time_seconds": 0.003812551498413086,
+        "solution_norm": 4.0198770554575817e+74,
+        "crossbar_size": 64,
+        "optimizations_enabled": true,
+        "iterations": 20,
+        "performance_stats": {
+          "cache": {
+            "hit_count": 0,
+            "miss_count": 10,
+            "hit_rate": 0.0,
+            "eviction_count": 0,
+            "entries": 10,
+            "memory_usage_mb": 0.006702423095703125,
+            "memory_usage_percent": 0.0013090670108795166
+          },
+          "auto_scaling": {
+            "error": "No metrics available"
+          }
+        }
+      },
+      "Basic-128": {
+        "solve_time_seconds": 0.006620645523071289,
+        "solution_norm": 1.8389569412073794e+99,
+        "crossbar_size": 128,
+        "optimizations_enabled": false,
+        "iterations": 20,
+        "performance_stats": {}
+      },
+      "Optimized-128": {
+        "solve_time_seconds": 0.006548166275024414,
+        "solution_norm": 2.3221189959295206e+99,
+        "crossbar_size": 128,
+        "optimizations_enabled": true,
+        "iterations": 20,
+        "performance_stats": {
+          "cache": {
+            "hit_count": 0,
+            "miss_count": 12,
+            "hit_rate": 0.0,
+            "eviction_count": 0,
+            "entries": 12,
+            "memory_usage_mb": 0.008039474487304688,
+            "memory_usage_percent": 0.0015702098608016968
+          },
+          "auto_scaling": {
+            "error": "No metrics available"
+          }
+        }
+      }
+    },
+    "Wave": {
+      "Basic-32": {
+        "solve_time_seconds": 0.0034744739532470703,
+        "solution_norm": 356.20756160840335,
+        "crossbar_size": 32,
+        "optimizations_enabled": false,
+        "iterations": 25,
+        "performance_stats": {}
+      },
+      "Optimized-32": {
+        "solve_time_seconds": 0.004033803939819336,
+        "solution_norm": 371.7943429491639,
+        "crossbar_size": 32,
+        "optimizations_enabled": true,
+        "iterations": 25,
+        "performance_stats": {
+          "cache": {
+            "hit_count": 0,
+            "miss_count": 14,
+            "hit_rate": 0.0,
+            "eviction_count": 0,
+            "entries": 14,
+            "memory_usage_mb": 0.00937652587890625,
+            "memory_usage_percent": 0.001831352710723877
+          },
+          "auto_scaling": {
+            "error": "No metrics available"
+          }
+        }
+      },
+      "Basic-64": {
+        "solve_time_seconds": 0.004450798034667969,
+        "solution_norm": 3.5183109008540043e+43,
+        "crossbar_size": 64,
+        "optimizations_enabled": false,
+        "iterations": 25,
+        "performance_stats": {}
+      },
+      "Optimized-64": {
+        "solve_time_seconds": 0.0043659210205078125,
+        "solution_norm": 3.4611836413324563e+43,
+        "crossbar_size": 64,
+        "optimizations_enabled": true,
+        "iterations": 25,
+        "performance_stats": {
+          "cache": {
+            "hit_count": 0,
+            "miss_count": 16,
+            "hit_rate": 0.0,
+            "eviction_count": 0,
+            "entries": 16,
+            "memory_usage_mb": 0.010713577270507812,
+            "memory_usage_percent": 0.002092495560646057
+          },
+          "auto_scaling": {
+            "error": "No metrics available"
+          }
+        }
+      },
+      "Basic-128": {
+        "solve_time_seconds": 0.007833480834960938,
+        "solution_norm": 2.5575985489820826e+74,
+        "crossbar_size": 128,
+        "optimizations_enabled": false,
+        "iterations": 25,
+        "performance_stats": {}
+      },
+      "Optimized-128": {
+        "solve_time_seconds": 0.007921695709228516,
+        "solution_norm": 2.5280896210215954e+74,
+        "crossbar_size": 128,
+        "optimizations_enabled": true,
+        "iterations": 25,
+        "performance_stats": {
+          "cache": {
+            "hit_count": 0,
+            "miss_count": 18,
+            "hit_rate": 0.0,
+            "eviction_count": 0,
+            "entries": 18,
+            "memory_usage_mb": 0.012050628662109375,
+            "memory_usage_percent": 0.0023536384105682373
+          },
+          "auto_scaling": {
+            "error": "No metrics available"
+          }
+        }
+      }
+    }
+  },
+  "accuracy_results": {},
+  "scalability_results": {
+    "Poisson": {
+      "basic_scaling": 0.4453588045539163,
+      "optimized_scaling": 0.4229345463151579,
+      "optimization_effectiveness": 1.0331465220384741
+    },
+    "Heat": {
+      "basic_scaling": 0.6369249944978499,
+      "optimized_scaling": 0.48592917443359934,
+      "optimization_effectiveness": 0.9019110153699166
+    },
+    "Wave": {
+      "basic_scaling": 0.5864294755162671,
+      "optimized_scaling": 0.48683416027345366,
+      "optimization_effectiveness": 0.956548089679484
+    }
+  }
+}
